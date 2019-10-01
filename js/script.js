@@ -8,6 +8,7 @@ let trendSlidesWidths = []; // в каждом элементе массива
 let slideMarginRight = 10;
 let slideHeight = 150;
 let sliderOffset = 0;
+let previousOffset = 0;
 let trendIndex = 0;
 
 
@@ -35,10 +36,15 @@ function showTrendingGifs() {
 function getSliderOffset() {
   for (let i = trendIndex; i < trendSlidesWidths.length; i++) {
     if (sliderOffset + trendSlidesWidths[i] > trendSliderWidth) {
+
       sliderOffset -= trendSlidesWidths[i - 1];
-      trendSliderWidth += sliderOffset;
+      trendSliderWidth += sliderOffset - previousOffset;
+      previousOffset = sliderOffset;
       trendIndex = i - 1;
       return sliderOffset;
+      
+    } else if (i == trendSlidesWidths.length - 1 && sliderOffset + trendSlidesWidths[i] <= trendSliderWidth) {
+
     }
     sliderOffset += trendSlidesWidths[i];
   }
