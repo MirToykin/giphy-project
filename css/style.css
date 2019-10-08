@@ -133,9 +133,60 @@ main {
 }
 .trending__slide {
   height: 150px;
-  width: auto;
-  margin-right: 10px;
+  line-height: 150px;
+  text-align: center;
+  font-size: 50px;
 }
-.trending__slide:not(last-child) {
+.trending__slide:not(:last-child) {
   margin-right: 10px;
+  
+}
+.trending__btn {
+  font-size: 30px;
+  color: #bbb;
+  position: absolute;
+  width: 70px;
+  height: 150px;
+  line-height: 150px;
+  top: 0;
+  z-index: 100;
+  text-align: center;
+  transition: opacity 0.7s;
+}
+.trending__btn:hover {
+  cursor: pointer;
+}
+.trending__btn:hover .trending__arrow {
+  border-color: #fff;
+}
+.trending__btn--forward {
+  right: 0;
+  background: linear-gradient(to left, #bbb 0%, transparent 100%);
+/*   opacity: 1; */
+}
+.trending__btn--back {
+  left: 0;
+  background: linear-gradient(to right, #bbb 0%, transparent 100%);
+  display: none;
+  opacity: 0;
+}
+.trending__arrow {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transform: rotate(45deg);
+}
+.trending__arrow--forward {
+  border-top: 3px solid #555;
+  border-right: 3px solid #555;
+}
+.trending__arrow--back {
+  border-left: 3px solid #555;
+  border-bottom: 3px solid #555;
 }
