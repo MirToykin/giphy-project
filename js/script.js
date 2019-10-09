@@ -1,6 +1,9 @@
 let apiKey = 'xttvZ1Z1SnbXsD7xJB7kWsX7oTqeqZWY';
+
+// ___________________________Карусель с трендовыми gif__________________________
+
 let trendLength = 20;
-let giphyAPI = `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}&limit=${trendLength}`;
+let trendGiphyAPI = `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}&limit=${trendLength}`;
 
 let trendSlidesContainer = document.querySelector('.trending__slides');
 let forwardBtn = document.querySelector('.trending__btn--forward'),
@@ -23,10 +26,9 @@ let trendIndex = 0;
 
 let btnTransitionTime = parseFloat(getComputedStyle(document.querySelector('.trending__btn')).transitionDuration) * 1000;
 
-// ___________________________Карусель с трендовыми gif__________________________
 
 function showTrendingGifs() {
-  fetch(giphyAPI)
+  fetch(trendGiphyAPI)
   .then(response => response.json())
   .then(json => {
     for (let i = 0; i < trendLength; i++) {
@@ -61,7 +63,7 @@ function showTrendingGifs() {
     }
     
   })
-  .catch(err => console.log(err.message))
+  .catch(err => alert(err.message))
 }
 
 function getForwardOffset() {
@@ -161,8 +163,41 @@ function scroll(offset) {
 }
 showTrendingGifs();
 
-// ___________________________Поисковая выдача__________________________
+// ___________________________форма поиска и поисковая выдача__________________________
 
+let searchLimit = 20,
+    searchOffset = 20;
 
+let searchGiphyAPI = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&limit=${searchLimit}`;
+
+let searchForm = document.querySelector('.search__form'),
+    searchField = document.querySelector('.search__query-field'),
+    serchResultsContainer = document.querySelector('.search-results__container');
+
+searchForm.addEventListener('submit', showSearchResults);
+
+function showSearchResults(event) {
+  event.preventDefault();
+
+  let queryString = `&q=${searchField.value}`;
+  
+
+      fetch(searchGiphyAPI + queryString)
+      .then(response => response.json())
+      .then(json => {
+        for (let i = 0; i < searchLimit; i++) {
+
+          let img = document.createElement('img');
+          img.src = json.data[i].images.original.url;
+          img.className = 'search-results__item';
+          serchResultsContainer.append(img);
+
+        }
+        
+        
+      })
+      .catch(err => alert(err.message))
+
+}
 // идея: вынести кнопки управления за окноо слайдера, при наведении делать их фон полупрозрачным, 
 // чтобы показать часть следующего изображения, возможно придется сузить окно слайдера

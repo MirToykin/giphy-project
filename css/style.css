@@ -54,7 +54,7 @@ body {
   box-sizing: border-box;
   background: #bbb;
 }
-.trending__header, .todays__header {
+.trending__header, .search-results__header {
   font-family: 'Calibri', sans-serif;
   font-size: 30px;
   color: #fff;
@@ -85,6 +85,8 @@ body {
   font-size: 30px;
   letter-spacing: 0.5px;
 }
+
+/*---------------форма поиска---------------*/
 .search {
   width: 80%;
   height: 50px;
@@ -99,6 +101,7 @@ body {
 .search__query-field {
   width: 90%;
   border: none;
+  padding: 0 15px;
 }
 .search__button {
   width: 10%;
@@ -189,4 +192,16 @@ main {
 .trending__arrow--back {
   border-left: 3px solid #555;
   border-bottom: 3px solid #555;
+}
+
+/*---------------результаты поиска---------------*/
+
+.search-results__container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.search-results__item {
+  height: 150px;
+  margin-bottom: 15px;
 }
