@@ -204,4 +204,8 @@ main {
 .search-results__item {
   height: 150px;
   margin-bottom: 15px;
+  margin-right: 15px;
+}
+.search-results__show-more {
+  display: none;
 }

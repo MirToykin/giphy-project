@@ -165,39 +165,62 @@ showTrendingGifs();
 
 // ___________________________форма поиска и поисковая выдача__________________________
 
-let searchLimit = 20,
-    searchOffset = 20;
+let searchLimit = 10,
+    searchOffset = 0;
+
+let queryString;
 
 let searchGiphyAPI = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&limit=${searchLimit}`;
 
 let searchForm = document.querySelector('.search__form'),
     searchField = document.querySelector('.search__query-field'),
-    serchResultsContainer = document.querySelector('.search-results__container');
-
-searchForm.addEventListener('submit', showSearchResults);
+    serchResultsContainer = document.querySelector('.search-results__container'),
+    showMoreBtn = document.querySelector('.search-results__show-more');
 
 function showSearchResults(event) {
   event.preventDefault();
 
-  let queryString = `&q=${searchField.value}`;
+  while (serchResultsContainer.firstChild) {
+    serchResultsContainer.removeChild(serchResultsContainer.firstChild);
+  }
+
+  queryString = `&q=${searchField.value}`;
+  searchField.value = '';
   
-
-      fetch(searchGiphyAPI + queryString)
-      .then(response => response.json())
-      .then(json => {
-        for (let i = 0; i < searchLimit; i++) {
-
-          let img = document.createElement('img');
-          img.src = json.data[i].images.original.url;
-          img.className = 'search-results__item';
-          serchResultsContainer.append(img);
-
-        }
-        
-        
-      })
-      .catch(err => alert(err.message))
+  requestGifs(queryString, '');
 
 }
+
+function requestGifs(queryString, offsetString) {
+  fetch(searchGiphyAPI + queryString + offsetString)
+  .then(response => response.json())
+  .then(json => {
+    for (let i = 0; i < searchLimit; i++) {
+
+      let img = document.createElement('img');
+      img.src = json.data[i].images.original.url;
+      img.className = 'search-results__item';
+      serchResultsContainer.append(img);
+
+    }
+    
+    showMoreBtn.style.display = 'block';
+    
+  })
+  .catch(err => alert(err.message))
+}
+
+function showMoreGifs() {
+  searchOffset += searchLimit;
+
+  let offsetString = `&offset=${searchOffset}`;
+
+  requestGifs(queryString, offsetString)
+}
+
+searchForm.addEventListener('submit', showSearchResults);
+showMoreBtn.addEventListener('click', showMoreGifs);
+
+
 // идея: вынести кнопки управления за окноо слайдера, при наведении делать их фон полупрозрачным, 
 // чтобы показать часть следующего изображения, возможно придется сузить окно слайдера
