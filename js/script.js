@@ -222,5 +222,40 @@ searchForm.addEventListener('submit', showSearchResults);
 showMoreBtn.addEventListener('click', showMoreGifs);
 
 
+// ___________________________увеличение изображения при клике__________________________
+
+
+let main = document.querySelector('main');
+
+function enlargeImage(event) {
+  if (event.target.className == 'trending__slide' || event.target.className == 'search-results__item') {
+  
+    let fullScreen = document.createElement('div');
+    fullScreen.className = 'full-screen';
+    document.body.append(fullScreen);
+
+    let  fullScreenImg = document.createElement('img');
+    fullScreenImg.className = 'full-screen__img';
+    fullScreenImg.setAttribute('src', event.target.getAttribute('src'));
+
+    let fullScreenImgContainer = document.createElement('div');
+    fullScreenImgContainer.className = 'full-screen__img-container';
+    let coef = fullScreenImg.width / fullScreenImg.height;
+    fullScreenImgContainer.height = fullScreenImg.height > 400 ? 400 : fullScreenImg.height;
+    fullScreenImgContainer.width = fullScreenImgContainer.height * coef;
+    fullScreenImgContainer.append(fullScreenImg);
+    console.log(getComputedStyle(fullScreenImgContainer));
+    fullScreen.append(fullScreenImgContainer);
+
+    let fullScreenCloseBtn = document.createElement('div');
+    fullScreenCloseBtn.className = 'full-screen__close-btn';
+    fullScreenCloseBtn.textContent = 'x';
+    fullScreenImgContainer.append(fullScreenCloseBtn);
+    
+  }
+}
+
+main.addEventListener('click', enlargeImage);
+
 // идея: вынести кнопки управления за окноо слайдера, при наведении делать их фон полупрозрачным, 
 // чтобы показать часть следующего изображения, возможно придется сузить окно слайдера
