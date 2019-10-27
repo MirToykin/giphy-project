@@ -106,7 +106,9 @@ body {
 .search__button {
   width: 10%;
   border: none;
-  background: #888;
+  background: #555;
+  color: #fff;
+  font-weight: bold;
 }
 .topWindow {
   position: fixed;
@@ -222,6 +224,10 @@ main {
 }
 .search-results__show-more {
   display: none;
+  background: #555;
+  border: none;
+  color: #fff;
+  padding: 5px;
 }
 
 /*---------------увеличение картинки при клике---------------*/
