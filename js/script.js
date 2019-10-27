@@ -34,6 +34,7 @@ function showTrendingGifs() {
     for (let i = 0; i < trendLength; i++) {
       let img = document.createElement('img');
       img.src = json.data[i].images.original.url;
+      img.setAttribute('data-title', json.data[i].title);
       img.className = 'trending__slide';
       trendSlidesContainer.append(img);
       let coef = json.data[i].images.original.width/json.data[i].images.original.height;
@@ -174,6 +175,7 @@ let searchGiphyAPI = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&lim
 
 let searchForm = document.querySelector('.search__form'),
     searchField = document.querySelector('.search__query-field'),
+    searchResultHeader = document.querySelector('.search-results__header'),
     serchResultsContainer = document.querySelector('.search-results__container'),
     showMoreBtn = document.querySelector('.search-results__show-more');
 
@@ -185,6 +187,7 @@ function showSearchResults(event) {
   }
 
   queryString = `&q=${searchField.value}`;
+  searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
   searchField.value = '';
   
   requestGifs(queryString, '');
@@ -200,6 +203,7 @@ function requestGifs(queryString, offsetString) {
       let img = document.createElement('img');
       img.src = json.data[i].images.original.url;
       img.className = 'search-results__item';
+      img.setAttribute('data-title', json.data[i].title);
       serchResultsContainer.append(img);
 
     }
@@ -221,41 +225,63 @@ function showMoreGifs() {
 searchForm.addEventListener('submit', showSearchResults);
 showMoreBtn.addEventListener('click', showMoreGifs);
 
+// ___________________________Прикрепление формы поиска к верху окна__________________________
+
+let topOfsearchForm = searchForm.getBoundingClientRect().top;
+console.log(topOfsearchForm);
+window.addEventListener('scroll', () => {
+  let windowScroll = pageYOffset;
+  console.log(windowScroll);
+  if (windowScroll > topOfsearchForm) {
+    searchForm.classList.add('topWindow');
+  } else {
+    searchForm.classList.remove('topWindow');
+  }
+})
 
 // ___________________________увеличение изображения при клике__________________________
 
-
 let main = document.querySelector('main');
+let fullScreen = document.querySelector('.full-screen');
+let fullScreenImgWrap = document.querySelector('.full-screen__img-wrap');
+let fullScreenCloseBtn = document.querySelector('.full-screen__close-btn');
+let fullScreenTitle = document.querySelector('.full-screen__title');
+let fullScreenTitleHeight = parseInt(getComputedStyle(fullScreenTitle).height);
+let fullScreenPopup = document.querySelector('.full-screen__popup');
+let fullScreenImg;
+let coef;
 
 function enlargeImage(event) {
   if (event.target.className == 'trending__slide' || event.target.className == 'search-results__item') {
   
-    let fullScreen = document.createElement('div');
-    fullScreen.className = 'full-screen';
-    document.body.append(fullScreen);
-
-    let  fullScreenImg = document.createElement('img');
-    fullScreenImg.className = 'full-screen__img';
-    fullScreenImg.setAttribute('src', event.target.getAttribute('src'));
-
-    let fullScreenImgContainer = document.createElement('div');
-    fullScreenImgContainer.className = 'full-screen__img-container';
-    let coef = fullScreenImg.width / fullScreenImg.height;
-    fullScreenImgContainer.height = fullScreenImg.height > 400 ? 400 : fullScreenImg.height;
-    fullScreenImgContainer.width = fullScreenImgContainer.height * coef;
-    fullScreenImgContainer.append(fullScreenImg);
-    console.log(getComputedStyle(fullScreenImgContainer));
-    fullScreen.append(fullScreenImgContainer);
-
-    let fullScreenCloseBtn = document.createElement('div');
-    fullScreenCloseBtn.className = 'full-screen__close-btn';
-    fullScreenCloseBtn.textContent = 'x';
-    fullScreenImgContainer.append(fullScreenCloseBtn);
+    fullScreen.style.display = 'block';
     
+    fullScreenImg = event.target.cloneNode();
+    fullScreenImg.className = 'full-screen__img';
+    
+    fullScreenTitle.textContent = fullScreenImg.getAttribute('data-title') == '' ? 'БЕЗ НАЗВАНИЯ' : fullScreenImg.getAttribute('data-title').toUpperCase();
+    coef = fullScreenImg.width / fullScreenImg.height;
+    
+    fullScreenImg.height = fullScreenImg.height > 400 ? 400 : fullScreenImg.height;
+    fullScreenImg.width = fullScreenImg.height * coef; /// ???
+    
+    fullScreenPopup.style.height = fullScreenImg.height + 50 + 'px';
+    fullScreenPopup.style.width = fullScreenImg.width + 'px';
+    
+    fullScreenImgWrap.append(fullScreenImg);
+    document.body.style.overflow = 'hidden';
+    
+    fullScreenCloseBtn.addEventListener('click', (event) => {
+      
+      fullScreenImg.remove();
+      fullScreen.style.display = 'none';
+      document.body.style.overflow = '';
+      
+    });
+  
   }
 }
 
 main.addEventListener('click', enlargeImage);
 
-// идея: вынести кнопки управления за окноо слайдера, при наведении делать их фон полупрозрачным, 
-// чтобы показать часть следующего изображения, возможно придется сузить окно слайдера
+// подумать в какую область видимости поместить coef
