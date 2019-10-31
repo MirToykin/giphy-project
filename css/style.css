@@ -45,7 +45,7 @@ border-spacing: 0;
 /*---------------конец сброса стилей---------------*/
 /*---------общие-----------------------*/
 body {
-  background: #ddd;
+  background: #555;
 }
 .wrapper {
   width: 80%;
@@ -57,8 +57,10 @@ body {
 .trending__header, .search-results__header {
   font-family: 'Calibri', sans-serif;
   font-size: 30px;
+  background: #555;
   color: #fff;
   margin-bottom: 10px;
+  padding: 5px;
 }
 /*---------------header---------------*/
 .header {
@@ -102,6 +104,7 @@ body {
   width: 90%;
   border: none;
   padding: 0 15px;
+  background: #ddd;
 }
 .search__button {
   width: 10%;
@@ -110,16 +113,22 @@ body {
   color: #fff;
   font-weight: bold;
 }
+.search-results__header {
+  display: none;
+}
 .topWindow {
   position: fixed;
-  top: 15px;
+  top: 0;
   left: 0;
   right: 0;
   margin: auto;
   z-index: 1000;
   width: 80%;
-  border-top: 1px solid #555;
-  border-bottom: 1px solid #555;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+}
+.bgWhite {
+  background: #fff;
 }
 
 /*---------------main---------------*/

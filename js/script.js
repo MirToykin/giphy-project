@@ -187,6 +187,7 @@ function showSearchResults(event) {
   }
 
   queryString = `&q=${searchField.value}`;
+  searchResultHeader.style.display = 'block';
   searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
   searchField.value = '';
   
@@ -233,9 +234,15 @@ window.addEventListener('scroll', () => {
   let windowScroll = pageYOffset;
   console.log(windowScroll);
   if (windowScroll > topOfsearchForm) {
+    
     searchForm.classList.add('topWindow');
+    searchField.classList.add('bgWhite');
+    
   } else {
+    
     searchForm.classList.remove('topWindow');
+    searchField.classList.remove('bgWhite');
+    
   }
 })
 
