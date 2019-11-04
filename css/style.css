@@ -75,17 +75,9 @@ body {
   display: block;
   text-decoration: none;
 }
-.logo {
+.header__logo-img {
   width: 150px;
   height: 50px;
-  background: #555;
-  text-align: center;
-  line-height: 50px;
-  font-weight: bold;
-  color: #fff;
-  font-family: 'Calibri', sans-serif;
-  font-size: 30px;
-  letter-spacing: 0.5px;
 }
 
 /*---------------форма поиска---------------*/

@@ -103,8 +103,6 @@ function getForwardOffset() {
 function getBackOffset() {
   let delIndex = trendIndex;
   
-  // if (forwardOffset == 0) return;
-  
   if (trendSliderWidth == allSlidesWidth) { // последний слайд по 
   //правому краю окна слайдера
     trendSliderWidth = forwardOffset + visibleSliderWidth;
@@ -181,28 +179,33 @@ let searchForm = document.querySelector('.search__form'),
 
 function showSearchResults(event) {
   event.preventDefault();
-
-  while (serchResultsContainer.firstChild) {
-    serchResultsContainer.removeChild(serchResultsContainer.firstChild);
-  }
-
-  queryString = `&q=${searchField.value}`;
-  searchResultHeader.style.display = 'block';
-  searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
-  searchField.value = '';
   
+  if (searchField.value == '') {
+    alert('Введите запрос!');
+    return;
+  }
+  
+  queryString = `&q=${searchField.value}`;
   requestGifs(queryString, '');
 
 }
 
-function requestGifs(queryString, offsetString) {
-  fetch(searchGiphyAPI + queryString + offsetString)
+function requestGifs(queryString, stringOffset) {
+  let i = 0;
+  fetch(searchGiphyAPI + queryString + stringOffset)
   .then(response => response.json())
   .then(json => {
-    for (let i = 0; i < searchLimit; i++) {
+    for (i; i < searchLimit; i++) {
 
       let img = document.createElement('img');
       img.src = json.data[i].images.original.url;
+      
+      if (i == 0) {
+        while (serchResultsContainer.firstChild) {
+          serchResultsContainer.removeChild(serchResultsContainer.firstChild);
+        }
+      }
+
       img.className = 'search-results__item';
       img.setAttribute('data-title', json.data[i].title);
       serchResultsContainer.append(img);
@@ -210,17 +213,22 @@ function requestGifs(queryString, offsetString) {
     }
     
     showMoreBtn.style.display = 'block';
+    searchResultHeader.style.display = 'block';
+    searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
+    searchField.value = '';
     
   })
-  .catch(err => alert(err.message))
+  .catch( () => {
+    if (i == 0) alert("Некорректный запрос!");
+  })
 }
 
 function showMoreGifs() {
   searchOffset += searchLimit;
 
-  let offsetString = `&offset=${searchOffset}`;
+  let stringOffset = `&offset=${searchOffset}`;
 
-  requestGifs(queryString, offsetString)
+  requestGifs(queryString, stringOffset)
 }
 
 searchForm.addEventListener('submit', showSearchResults);
@@ -256,7 +264,6 @@ let fullScreenTitle = document.querySelector('.full-screen__title');
 let fullScreenTitleHeight = parseInt(getComputedStyle(fullScreenTitle).height);
 let fullScreenPopup = document.querySelector('.full-screen__popup');
 let fullScreenImg;
-let coef;
 
 function enlargeImage(event) {
   if (event.target.className == 'trending__slide' || event.target.className == 'search-results__item') {
@@ -267,10 +274,10 @@ function enlargeImage(event) {
     fullScreenImg.className = 'full-screen__img';
     
     fullScreenTitle.textContent = fullScreenImg.getAttribute('data-title') == '' ? 'БЕЗ НАЗВАНИЯ' : fullScreenImg.getAttribute('data-title').toUpperCase();
-    coef = fullScreenImg.width / fullScreenImg.height;
+    let coef = fullScreenImg.width / fullScreenImg.height;
     
     fullScreenImg.height = fullScreenImg.height > 400 ? 400 : fullScreenImg.height;
-    fullScreenImg.width = fullScreenImg.height * coef; /// ???
+    fullScreenImg.width = fullScreenImg.height * coef; 
     
     fullScreenPopup.style.height = fullScreenImg.height + 50 + 'px';
     fullScreenPopup.style.width = fullScreenImg.width + 'px';
@@ -290,5 +297,3 @@ function enlargeImage(event) {
 }
 
 main.addEventListener('click', enlargeImage);
-
-// подумать в какую область видимости поместить coef
