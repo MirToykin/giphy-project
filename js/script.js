@@ -212,21 +212,18 @@ function requestGifs(queryString, stringOffset) {
       serchResultsContainer.append(img);
 
     }
-    
-    // showMoreBtn.style.display = 'block';
-    // searchResultHeader.style.display = 'block';
-    // searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
-    // searchField.value = '';
+
     showSerchResultsContainerElements(true);
-    
   })
   .catch( () => {
-    if (i == 0) {
-      alert("Некорректный запрос!");
+    if (i == 0 && !serchResultsContainer.firstChild) {
+      alert("Ничего не найдено!");
       searchField.value = '';
       searchField.focus();
+    } else if (i == 0 && serchResultsContainer.firstChild || i != 0 && searchResultHeader.style.display == 'block') {
+      showMoreBtn.style.display = 'none'; 
     } else {
-      showSerchResultsContainerElements(i == searchLimit - 1);
+      showSerchResultsContainerElements(false);
     }
   })
 }
