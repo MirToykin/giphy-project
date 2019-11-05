@@ -182,6 +182,7 @@ function showSearchResults(event) {
   
   if (searchField.value == '') {
     alert('Введите запрос!');
+    searchField.focus();
     return;
   }
   
@@ -200,7 +201,7 @@ function requestGifs(queryString, stringOffset) {
       let img = document.createElement('img');
       img.src = json.data[i].images.original.url;
       
-      if (i == 0) {
+      if (i == 0 && stringOffset == '') {
         while (serchResultsContainer.firstChild) {
           serchResultsContainer.removeChild(serchResultsContainer.firstChild);
         }
@@ -212,15 +213,34 @@ function requestGifs(queryString, stringOffset) {
 
     }
     
-    showMoreBtn.style.display = 'block';
-    searchResultHeader.style.display = 'block';
-    searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
-    searchField.value = '';
+    // showMoreBtn.style.display = 'block';
+    // searchResultHeader.style.display = 'block';
+    // searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
+    // searchField.value = '';
+    showSerchResultsContainerElements(true);
     
   })
   .catch( () => {
-    if (i == 0) alert("Некорректный запрос!");
+    if (i == 0) {
+      alert("Некорректный запрос!");
+      searchField.value = '';
+      searchField.focus();
+    } else {
+      showSerchResultsContainerElements(i == searchLimit - 1);
+    }
   })
+}
+
+function showSerchResultsContainerElements(isFull) {
+  if (isFull) {
+    showMoreBtn.style.display = 'block';
+  } else {
+    showMoreBtn.style.display = 'none';
+  }
+  
+  searchResultHeader.style.display = 'block';
+  searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
+  searchField.value = '';
 }
 
 function showMoreGifs() {
@@ -237,10 +257,8 @@ showMoreBtn.addEventListener('click', showMoreGifs);
 // ___________________________Прикрепление формы поиска к верху окна__________________________
 
 let topOfsearchForm = searchForm.getBoundingClientRect().top;
-console.log(topOfsearchForm);
 window.addEventListener('scroll', () => {
   let windowScroll = pageYOffset;
-  console.log(windowScroll);
   if (windowScroll > topOfsearchForm) {
     
     searchForm.classList.add('topWindow');
