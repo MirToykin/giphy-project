@@ -168,11 +168,13 @@ let searchLimit = 10,
     searchOffset = 0;
 
 let queryString;
+let requestString;
 
 let searchGiphyAPI = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&limit=${searchLimit}`;
 
 let searchForm = document.querySelector('.search__form'),
     searchField = document.querySelector('.search__query-field'),
+    // searchBtn = document.querySelector('.search__button'),
     searchResultHeader = document.querySelector('.search-results__header'),
     serchResultsContainer = document.querySelector('.search-results__container'),
     showMoreBtn = document.querySelector('.search-results__show-more');
@@ -185,13 +187,15 @@ function showSearchResults(event) {
     searchField.focus();
     return;
   }
+
+  requestString = searchField.value;
   
-  queryString = `&q=${searchField.value}`;
-  requestGifs(queryString, '');
+  queryString = `&q=${requestString}`;
+  requestGifs(queryString, '', event.target);
 
 }
 
-function requestGifs(queryString, stringOffset) {
+function requestGifs(queryString, stringOffset, target) {
   let i = 0;
   fetch(searchGiphyAPI + queryString + stringOffset)
   .then(response => response.json())
@@ -219,8 +223,8 @@ function requestGifs(queryString, stringOffset) {
 
     showSerchResultsContainerElements(true);
   })
-  .catch( () => {
-    if (i == 0 && !serchResultsContainer.firstChild) {
+  .catch( (error) => {
+    if (i == 0 && target == searchForm) {
       alert("Ничего не найдено!");
       searchField.value = '';
       searchField.focus();
@@ -240,16 +244,16 @@ function showSerchResultsContainerElements(isFull) {
   }
   
   searchResultHeader.style.display = 'block';
-  searchResultHeader.textContent = 'Результаты по запросу: ' + searchField.value;
+  searchResultHeader.textContent = 'Результаты по запросу: ' + requestString;
   searchField.value = '';
 }
 
-function showMoreGifs() {
+function showMoreGifs(event) {
   searchOffset += searchLimit;
 
   let stringOffset = `&offset=${searchOffset}`;
 
-  requestGifs(queryString, stringOffset)
+  requestGifs(`&q=${searchResultHeader.textContent.slice(23)}`, stringOffset, event.target)
 }
 
 searchForm.addEventListener('submit', showSearchResults);
