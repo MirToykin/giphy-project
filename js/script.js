@@ -205,6 +205,10 @@ function requestGifs(queryString, stringOffset) {
         while (serchResultsContainer.firstChild) {
           serchResultsContainer.removeChild(serchResultsContainer.firstChild);
         }
+        
+        searchResultHeader.style.display = 'none';
+        showMoreBtn.style.display = 'none';
+        
       }
 
       img.className = 'search-results__item';
@@ -220,7 +224,7 @@ function requestGifs(queryString, stringOffset) {
       alert("Ничего не найдено!");
       searchField.value = '';
       searchField.focus();
-    } else if (i == 0 && serchResultsContainer.firstChild || i != 0 && searchResultHeader.style.display == 'block') {
+    } else if (i == 0 && serchResultsContainer.firstChild || i != 0 && showMoreBtn.style.display == 'block') {
       showMoreBtn.style.display = 'none'; 
     } else {
       showSerchResultsContainerElements(false);
