@@ -221,7 +221,10 @@ function requestGifs(queryString, stringOffset, target) {
 
     }
 
-    showSerchResultsContainerElements(true);
+    if (target == searchForm) {
+      showSerchResultsContainerElements(true);
+    }
+    
   })
   .catch( (error) => {
     if (i == 0 && target == searchForm) {
