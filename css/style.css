@@ -215,11 +215,6 @@ main {
   justify-content: space-between;
   flex-wrap: wrap;
 }
-.search-results__col {
-  width: 20%;
-  height: 100px;
-  border: 1px solid red;
-}
 .search-results__item {
   height: 150px;
   margin-bottom: 15px;
