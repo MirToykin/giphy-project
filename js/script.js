@@ -182,7 +182,13 @@ let searchForm = document.querySelector('.search__form'),
     searchField = document.querySelector('.search__query-field'),
     searchResultHeader = document.querySelector('.search-results__header'),
     serchResultsContainer = document.querySelector('.search-results__container'),
-    showMoreBtn = document.querySelector('.search-results__show-more');
+    showMoreBtn = document.querySelector('.search-results__show-more'),
+    searchResultCols = document.querySelectorAll('.search-results__col'),
+    searchResultCol1 = document.querySelector('.search-results__col--1'),
+    searchResultCol2 = document.querySelector('.search-results__col--2'),
+    searchResultCol3 = document.querySelector('.search-results__col--3'),
+    searchResultCol4 = document.querySelector('.search-results__col--4'),
+    searchResultCol5 = document.querySelector('.search-results__col--5');
 
 function showSearchResults(event) {
   event.preventDefault();
@@ -201,7 +207,9 @@ function showSearchResults(event) {
 }
 
 function requestGifs(queryString, stringOffset, target) {
-  let i = 0;
+  let i = 0,
+      currentCol = 0;
+
   fetch(searchGiphyAPI + queryString + stringOffset)
   .then(response => response.json())
   .then(json => {
@@ -211,10 +219,13 @@ function requestGifs(queryString, stringOffset, target) {
       img.src = json.data[i].images.fixed_height.url;
       
       if (i == 0 && stringOffset == '') {
-        while (serchResultsContainer.firstChild) {
-          serchResultsContainer.removeChild(serchResultsContainer.firstChild);
+
+        for (let i = 0; i < searchResultCols.length; i++) {
+          while (searchResultCols[i].firstChild) {
+            searchResultCols[i].removeChild(searchResultCols[i].firstChild);
+          }
         }
-        
+
         searchResultHeader.style.display = 'none';
         showMoreBtn.style.display = 'none';
         
@@ -223,7 +234,11 @@ function requestGifs(queryString, stringOffset, target) {
       img.className = 'search-results__item';
       img.setAttribute('data-title', json.data[i].title);
       img.setAttribute('data-id', json.data[i].id);
-      serchResultsContainer.append(img);
+      // serchResultsContainer.append(img);
+      if (currentCol == searchResultCols.length) currentCol = 0;
+      searchResultCols[currentCol].append(img);
+
+      currentCol++;
 
     }
 
@@ -232,7 +247,8 @@ function requestGifs(queryString, stringOffset, target) {
     }
     
   })
-  .catch( () => {
+  .catch( (error) => {
+    console.log(error.message);
     if (i == 0 && target == searchForm) {
       alert("Ничего не найдено!");
       searchField.value = '';
