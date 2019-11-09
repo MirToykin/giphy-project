@@ -11,8 +11,15 @@ let trendSlidesContainer = document.querySelector('.trending__slides');
 let forwardBtn = document.querySelector('.trending__btn--forward'),
     backBtn = document.querySelector('.trending__btn--back');
 
-let trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
-let visibleSliderWidth = trendSliderWidth;
+let trendSliderWidth;
+let visibleSliderWidth;
+window.addEventListener('resize', () => {
+  trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
+  visibleSliderWidth = trendSliderWidth;
+})
+
+// let trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
+// let visibleSliderWidth = trendSliderWidth;
 let trendSlidesWidths = [];  // в каждом элементе массива 
 //будет храниться ширина картинки + ее margin
 let allSlidesWidth;
