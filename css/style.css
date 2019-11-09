@@ -48,8 +48,7 @@ body {
   background: #555;
 }
 .wrapper {
-  width: 80%;
-  min-width: 800px;
+  width: 1040px;
   margin: 100px auto;
   box-sizing: border-box;
   background: #bbb;
@@ -82,24 +81,24 @@ body {
 
 /*---------------форма поиска---------------*/
 .search {
-  width: 80%;
+  width: 800px;
   height: 50px;
 }
 .search__form {
   font-size: 0;
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   justify-content: flex-end;
   height: 50px;
 }
 .search__query-field {
-  width: 90%;
+  width: 700px;
   border: none;
   padding: 0 15px;
   background: #ddd;
 }
 .search__button {
-  width: 10%;
+  width: 100px;
   border: none;
   background: #555;
   color: #fff;
@@ -116,12 +115,15 @@ body {
   right: 0;
   margin: auto;
   z-index: 1000;
-  width: 80%;
+  width: 1040px;
   box-sizing: border-box;
-  border: 2px solid #fff;
+  /* border: 2px solid #fff; */
 }
 .bgWhite {
   background: #fff;
+  width: 940px;
+  transition: background-color 0.7s,
+              width 0.7s;
 }
 
 /*---------------main---------------*/
@@ -135,7 +137,7 @@ main {
 .trending__slider-window {
   overflow: hidden;
   margin: 0 auto;
-  width: 100%;
+  /* width: 100%; */
   height: 150px;
   position: relative;
 }
@@ -216,12 +218,12 @@ main {
   flex-wrap: wrap;
 }
 .search-results__col {
-  width: 19%;
+  width: 192px;
 }
 .search-results__item {
   width: 100%;
   height: auto;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   cursor: pointer;
 }
 .search-results__show-more {

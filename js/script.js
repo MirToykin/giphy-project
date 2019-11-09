@@ -298,11 +298,17 @@ window.addEventListener('scroll', () => {
     
     searchForm.classList.add('topWindow');
     searchField.classList.add('bgWhite');
+
+    setTimeout(() => {
+      searchForm.style.border = '2px solid #fff';
+    }, 700)
     
   } else {
     
     searchForm.classList.remove('topWindow');
     searchField.classList.remove('bgWhite');
+
+    searchForm.style.border = '';
     
   }
 })
