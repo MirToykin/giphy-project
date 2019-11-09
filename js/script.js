@@ -18,8 +18,6 @@ window.addEventListener('resize', () => {
   visibleSliderWidth = trendSliderWidth;
 })
 
-// let trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
-// let visibleSliderWidth = trendSliderWidth;
 let trendSlidesWidths = [];  // в каждом элементе массива 
 //будет храниться ширина картинки + ее margin
 let allSlidesWidth;
