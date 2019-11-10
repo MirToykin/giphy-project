@@ -11,12 +11,8 @@ let trendSlidesContainer = document.querySelector('.trending__slides');
 let forwardBtn = document.querySelector('.trending__btn--forward'),
     backBtn = document.querySelector('.trending__btn--back');
 
-let trendSliderWidth;
-let visibleSliderWidth;
-window.addEventListener('resize', () => {
-  trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
-  visibleSliderWidth = trendSliderWidth;
-})
+let trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;;
+let visibleSliderWidth = trendSliderWidth;;
 
 let trendSlidesWidths = [];  // в каждом элементе массива 
 //будет храниться ширина картинки + ее margin
@@ -291,25 +287,22 @@ showMoreBtn.addEventListener('click', showMoreGifs);
 
 // ___________________________Прикрепление формы поиска к верху окна__________________________
 
+let searchDiv = document.querySelector('.search');
+
 let topOfsearchForm = searchForm.getBoundingClientRect().top;
 window.addEventListener('scroll', () => {
   let windowScroll = pageYOffset;
+
   if (windowScroll > topOfsearchForm) {
     
-    searchForm.classList.add('topWindow');
+    searchDiv.classList.add('topWindow');
     searchField.classList.add('bgWhite');
-
-    setTimeout(() => {
-      searchForm.style.border = '2px solid #fff';
-    }, 700)
     
   } else {
     
-    searchForm.classList.remove('topWindow');
+    searchDiv.classList.remove('topWindow');
     searchField.classList.remove('bgWhite');
 
-    searchForm.style.border = '';
-    
   }
 })
 
