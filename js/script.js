@@ -279,32 +279,76 @@ function showMoreGifs(event) {
 
   let stringOffset = `&offset=${searchOffset}`;
 
-  requestGifs(`&q=${searchResultHeader.textContent.slice(23)}`, stringOffset, event.target)
+  requestGifs(`&q=${searchResultHeader.textContent.slice(23)}`, stringOffset, event.target) // 'Результаты по запросу: ' - 23 символа (крайний индекс 22), с 23 идет текст запроса
+}
+
+function getSearchResultsItemMarginBottom() {
+  let searchResultsItems = document.querySelectorAll('.search-results__item'),
+      widthOfCol = serchResultsContainer.offsetWidth * 0.192; // 19.2% ширина колонки
+
+  if (searchResultsItems && serchResultsContainer.offsetWidth < 1000) {
+    let mb = (serchResultsContainer.offsetWidth - widthOfCol * 5)/4 + 'px'; // 5 - кол-во колонок, 4 - кол-во промежутков между колонками.
+    for (let i = 0; i < searchResultsItems.length; i++) {
+      searchResultsItems[i].style.marginBottom = mb;
+    }
+    
+  } else {
+    
+    if (getComputedStyle(searchResultsItems[0].marginBottom != '0.625em')) {
+      
+      for (let i = 0; i < searchResultsItems.length; i++) {
+        searchResultsItems[i].style.marginBottom = '0.625em';
+      }
+      
+    }
+    
+  }
 }
 
 searchForm.addEventListener('submit', showSearchResults);
 showMoreBtn.addEventListener('click', showMoreGifs);
+window.addEventListener('resize', getSearchResultsItemMarginBottom);
 
 // ___________________________Прикрепление формы поиска к верху окна__________________________
 
 let searchDiv = document.querySelector('.search');
-
 let topOfsearchForm = searchForm.getBoundingClientRect().top;
+let isHandled = false;
+
+function topWindowWidthDefine() {
+  searchDiv.style.width = getComputedStyle(document.querySelector('.trending__header')).width;
+}
+
 window.addEventListener('scroll', () => {
   let windowScroll = pageYOffset;
 
   if (windowScroll > topOfsearchForm) {
     
     searchDiv.classList.add('topWindow');
-    searchField.classList.add('bgWhite');
+    topWindowWidthDefine();
+    
+    window.addEventListener('resize', topWindowWidthDefine);
+    isHandled = true;
     
   } else {
     
     searchDiv.classList.remove('topWindow');
-    searchField.classList.remove('bgWhite');
+    
+    if (isHandled) {
+      window.removeEventListener('resize', topWindowWidthDefine);
+      
+      if (document.documentElement.clientWidth > 480) {
+        searchDiv.style.width = '76.92307%';
+      }
+      
+      isHandled = false;
+      
+    }
 
   }
-})
+});
+
+
 
 // ___________________________увеличение изображения при клике__________________________
 
