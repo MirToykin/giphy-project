@@ -283,26 +283,32 @@ function showMoreGifs(event) {
 }
 
 function getSearchResultsItemMarginBottom() {
+
   let searchResultsItems = document.querySelectorAll('.search-results__item'),
       widthOfCol = serchResultsContainer.offsetWidth * 0.192; // 19.2% ширина колонки
 
-  if (searchResultsItems && serchResultsContainer.offsetWidth < 1000) {
-    let mb = (serchResultsContainer.offsetWidth - widthOfCol * 5)/4 + 'px'; // 5 - кол-во колонок, 4 - кол-во промежутков между колонками.
-    for (let i = 0; i < searchResultsItems.length; i++) {
-      searchResultsItems[i].style.marginBottom = mb;
-    }
-    
-  } else {
-    
-    if (getComputedStyle(searchResultsItems[0].marginBottom != '0.625em')) {
-      
+  if (searchResultsItems.length != 0) {
+
+    if (serchResultsContainer.offsetWidth < 1000) {
+      let mb = (serchResultsContainer.offsetWidth - widthOfCol * 5)/4 + 'px'; // 5 - кол-во колонок, 4 - кол-во промежутков между колонками.
+
       for (let i = 0; i < searchResultsItems.length; i++) {
-        searchResultsItems[i].style.marginBottom = '0.625em';
+        searchResultsItems[i].style.marginBottom = mb;
+      }      
+    } else {
+
+      if (getComputedStyle(searchResultsItems[0]).marginBottom != '0.625em') {
+
+        for (let i = 0; i < searchResultsItems.length; i++) {
+          searchResultsItems[i].style.marginBottom = '0.625em';
+        }
+
       }
-      
+
     }
-    
+
   }
+
 }
 
 searchForm.addEventListener('submit', showSearchResults);
@@ -315,35 +321,34 @@ let searchDiv = document.querySelector('.search');
 let topOfsearchForm = searchForm.getBoundingClientRect().top;
 let isHandled = false;
 
-function topWindowWidthDefine() {
-  searchDiv.style.width = getComputedStyle(document.querySelector('.trending__header')).width;
+function setTopWindowWidth() {
+  let topWindow = document.querySelector('.topWindow');
+  if (!topWindow) return;
+  topWindow.style.width = getComputedStyle(document.querySelector('.trending__header')).width;
 }
 
+function setSearchDivWidth() {
+  let documentWidth = document.documentElement.clientWidth;
+  
+  if (documentWidth <= 480) {
+    searchDiv.style.width = '100%';
+  }
+}
+
+window.addEventListener('resize', setTopWindowWidth);
+window.addEventListener('resize', setSearchDivWidth);
 window.addEventListener('scroll', () => {
   let windowScroll = pageYOffset;
 
   if (windowScroll > topOfsearchForm) {
     
     searchDiv.classList.add('topWindow');
-    topWindowWidthDefine();
-    
-    window.addEventListener('resize', topWindowWidthDefine);
-    isHandled = true;
+    setTopWindowWidth();
     
   } else {
     
     searchDiv.classList.remove('topWindow');
-    
-    if (isHandled) {
-      window.removeEventListener('resize', topWindowWidthDefine);
-      
-      if (document.documentElement.clientWidth > 480) {
-        searchDiv.style.width = '76.92307%';
-      }
-      
-      isHandled = false;
-      
-    }
+    searchDiv.style.width = '100%';
 
   }
 });
