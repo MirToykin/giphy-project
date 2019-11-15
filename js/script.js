@@ -50,6 +50,7 @@ function insertImages(cols, img) {
 
   let trendIndex = 0;
   let trendingCols = document.querySelectorAll('.trending__col');
+  let trendItemMarginBottom;
 
   let btnTransitionTime = parseFloat(getComputedStyle(document.querySelector('.trending__btn')).transitionDuration) * 1000;
 
@@ -206,11 +207,13 @@ function insertImages(cols, img) {
 
       if (getComputedStyle(trendingCols[2]).display == 'none') { // ширина экрана <= 480px
         for (let i = 0; i < trends.length; i++) {
-          trends[i].style.marginBottom = document.documentElement.clientWidth * 0.005 + 'px';
+          trendItemMarginBottom = trendSlidesContainer.offsettWidth * 0.005;
+          trends[i].style.marginBottom = trendItemMarginBottom  + 'px';
         }
       } else {
         for (let i = 0; i < trends.length; i++) {
-          trends[i].style.marginBottom = document.documentElement.clientWidth * 0.005 + 'px';
+          trendItemMarginBottom = (trendSlidesContainer.offsetWidth * 0.025)/2;
+          trends[i].style.marginBottom = trendItemMarginBottom  + 'px';
         }
       }
 
@@ -232,11 +235,12 @@ function insertImages(cols, img) {
 
           for (let i = 0; i < trendingCols.length; i++) {
             if (getComputedStyle(trendingCols[i]).display != 'none') {
-              let GifsHeightSum = 0;
+              let gifsHeightSum = 0;
               for (let j = 0; j < trendingCols[i].children.length; j++) {
-                GifsHeightSum += +(getComputedStyle(trendingCols[i].children[j]).height).slice(0,-2);
+                gifsHeightSum += +(getComputedStyle(trendingCols[i].children[j]).height).slice(0,-2);
+                if (j != trendingCols[i].children.length - 1) gifsHeightSum += trendItemMarginBottom
               }
-              if (GifsHeightSum > heightForTrendSlidesContainer) heightForTrendSlidesContainer = GifsHeightSum;
+              if (gifsHeightSum > heightForTrendSlidesContainer) heightForTrendSlidesContainer = gifsHeightSum;
             }
           }
           trendSlidesContainer.style.height = heightForTrendSlidesContainer + 'px';

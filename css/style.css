@@ -331,6 +331,7 @@ main {
     overflow: hidden;
     transition: height 0.7s;
     justify-content: space-between;
+    font-size: 0;
   }
   .trending__col, .search-results__col {
     width: 32.5%; 
