@@ -201,12 +201,19 @@ function insertImages(cols, img) {
   }
   
   function setTrendingMobileMarginBottom() {
-    if (document.documentElement.clientWidth <= 480) {
+    if (document.documentElement.clientWidth <= 767) {
       let trends = document.querySelectorAll('.trending__slide');
 
-      for (let i = 0; i < trends.length; i++) {
-        trends[i].style.marginBottom = document.documentElement.clientWidth * 0.005 + 'px';
+      if (getComputedStyle(trendingCols[2]).display == 'none') { // ширина экрана <= 480px
+        for (let i = 0; i < trends.length; i++) {
+          trends[i].style.marginBottom = document.documentElement.clientWidth * 0.005 + 'px';
+        }
+      } else {
+        for (let i = 0; i < trends.length; i++) {
+          trends[i].style.marginBottom = document.documentElement.clientWidth * 0.005 + 'px';
+        }
       }
+
     }
   }
   
@@ -217,11 +224,12 @@ function insertImages(cols, img) {
       } else {
         trendingHeader.textContent = 'Скрыть трендовые Gif';
       }
-      
-      trendingHeader.addEventListener('click', () => {
+
+      function handleTrendingHeaderClick() {
         let heightForTrendSlidesContainer = 0;
         
         if (getComputedStyle(trendSlidesContainer).height == '0px') {
+
           for (let i = 0; i < trendingCols.length; i++) {
             if (getComputedStyle(trendingCols[i]).display != 'none') {
               let GifsHeightSum = 0;
@@ -232,17 +240,24 @@ function insertImages(cols, img) {
             }
           }
           trendSlidesContainer.style.height = heightForTrendSlidesContainer + 'px';
+          trendingHeader.textContent = 'Скрыть трендовые Gif';
         } else {
           trendSlidesContainer.style.height = '0px';
+          trendingHeader.textContent = 'Показать трендовые Gif';
         }
-        
-      });
+      }
+      
+      trendingHeader.addEventListener('click', handleTrendingHeaderClick);
+    } else {
+      trendingHeader.removeEventListener('click', handleTrendingHeaderClick);
+      trendingHeader.textContent = 'Трендовые Gif';
     }
   }
   
   setTrendingHeader();
   getTrendingGifs();
   window.addEventListener('resize', setTrendingMobileMarginBottom);
+  window.addEventListener('resize', setTrendingHeader);
 
 })();
 
