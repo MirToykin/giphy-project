@@ -207,7 +207,7 @@ function insertImages(cols, img) {
 
       if (getComputedStyle(trendingCols[2]).display == 'none') { // ширина экрана <= 480px
         for (let i = 0; i < trends.length; i++) {
-          trendItemMarginBottom = trendSlidesContainer.offsettWidth * 0.005;
+          trendItemMarginBottom = trendSlidesContainer.offsetWidth * 0.005;
           trends[i].style.marginBottom = trendItemMarginBottom  + 'px';
         }
       } else {
@@ -238,7 +238,7 @@ function insertImages(cols, img) {
               let gifsHeightSum = 0;
               for (let j = 0; j < trendingCols[i].children.length; j++) {
                 gifsHeightSum += +(getComputedStyle(trendingCols[i].children[j]).height).slice(0,-2);
-                if (j != trendingCols[i].children.length - 1) gifsHeightSum += trendItemMarginBottom
+                if (j != trendingCols[i].children.length - 1) gifsHeightSum += trendItemMarginBottom;
               }
               if (gifsHeightSum > heightForTrendSlidesContainer) heightForTrendSlidesContainer = gifsHeightSum;
             }
