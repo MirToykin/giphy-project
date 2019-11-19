@@ -51,6 +51,7 @@ function insertImages(cols, img) {
   let trendIndex = 0;
   let trendingCols = document.querySelectorAll('.trending__col');
   let trendItemMarginBottom;
+  let coef;
 
   let btnTransitionTime = parseFloat(getComputedStyle(document.querySelector('.trending__btn')).transitionDuration) * 1000;
 
@@ -67,6 +68,8 @@ function insertImages(cols, img) {
         img.setAttribute('data-title', json.data[index].title);
         img.setAttribute('data-id', json.data[index].id);
         img.className = 'trending__slide';
+        coef = json.data[index].images.original.width/json.data[index].images.original.height;
+        img.setAttribute('data-coef', coef);
 
         if (screenWidth <= 767) {
           currentCol = getColIndex(trendingCols);

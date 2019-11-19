@@ -329,7 +329,7 @@ main {
     position: static;
     height: 0;
     overflow: hidden;
-    transition: height 0.7s;
+    transition: height 0.7s linear;
     justify-content: space-between;
     font-size: 0;
   }
