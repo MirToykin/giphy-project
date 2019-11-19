@@ -239,8 +239,9 @@ function insertImages(cols, img) {
           for (let i = 0; i < trendingCols.length; i++) {
             if (getComputedStyle(trendingCols[i]).display != 'none') {
               let gifsHeightSum = 0;
+              let widthOfCol = trendingCols[i].offsetWidth;
               for (let j = 0; j < trendingCols[i].children.length; j++) {
-                gifsHeightSum += +(getComputedStyle(trendingCols[i].children[j]).height).slice(0,-2);
+                gifsHeightSum += widthOfCol / trendingCols[i].children[j].getAttribute('data-coef');
                 if (j != trendingCols[i].children.length - 1) gifsHeightSum += trendItemMarginBottom;
               }
               if (gifsHeightSum > heightForTrendSlidesContainer) heightForTrendSlidesContainer = gifsHeightSum;
