@@ -76,7 +76,6 @@ function insertImages(cols, img) {
           insertImages(trendingCols, img);
         } else {
           trendSlidesContainer.append(img);
-          let coef = json.data[index].images.original.width/json.data[index].images.original.height;
           trendSlidesWidths.push(coef);
         }
 
@@ -305,6 +304,10 @@ function insertImages(cols, img) {
 
     queryString = `&q=${requestString}`;
     requestGifs(queryString, '', event.target);
+
+    if(document.documentElement.clientWidth <= 767) {
+      serchResultsContainer.scrollIntoView();
+    }
 
   }
 
