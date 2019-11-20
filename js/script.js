@@ -13,21 +13,17 @@ function getColIndex(cols) {
 }
         
 function insertImages(cols, img) {
-  if (currentCol == cols.length) currentCol = 0;
   
   if (getComputedStyle(cols[currentCol]).display != 'none') {
     cols[currentCol].append(img);
   } else {
     index--;
   }
-  currentCol++;
 }
 // ___________________________Карусель с трендовыми gif__________________________
 (() => {
   let trendLength = 20;
   let trendGiphyAPI = `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}&limit=${trendLength}`;
-  // let trendGiphyAPI = `https://api.giphy.com/v1/gifs/MZoBUfHfHcMz6D6t3n?api_key=${apiKey}`;
-
 
   let trendSlidesContainer = document.querySelector('.trending__slides');
   let forwardBtn = document.querySelector('.trending__btn--forward'),
@@ -306,14 +302,14 @@ function insertImages(cols, img) {
     requestGifs(queryString, '', event.target);
 
     if(document.documentElement.clientWidth <= 767) {
-      serchResultsContainer.scrollIntoView();
+      // serchResultsContainer.scrollIntoView(true);
+      
     }
 
   }
 
   function requestGifs(queryString, stringOffset, target) {
-    let i = 0,
-        currentCol = 0;
+    let i = 0;
 
     fetch(searchGiphyAPI + queryString + stringOffset)
     .then(response => response.json())
@@ -340,9 +336,8 @@ function insertImages(cols, img) {
         img.setAttribute('data-title', json.data[i].title);
         img.setAttribute('data-id', json.data[i].id);
 
-        if (currentCol == searchResultCols.length) currentCol = 0;
-        searchResultCols[currentCol].append(img);
-        currentCol++;
+        currentCol = getColIndex(searchResultCols);
+        insertImages(searchResultCols, img);
 
       }
 
