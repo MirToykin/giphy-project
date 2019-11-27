@@ -226,7 +226,7 @@ function insertImages(cols, img) {
         trendingHeader.textContent = 'Скрыть трендовые Gif';
       }
 
-      function handleTrendingHeaderClick() {
+      function handleClickAtTrendingHeader() {
         let heightForTrendSlidesContainer = 0;
         
         if (getComputedStyle(trendSlidesContainer).height == '0px') {
@@ -250,9 +250,9 @@ function insertImages(cols, img) {
         }
       }
       
-      trendingHeader.addEventListener('click', handleTrendingHeaderClick);
+      trendingHeader.addEventListener('click', handleClickAtTrendingHeader);
     } else {
-      trendingHeader.removeEventListener('click', handleTrendingHeaderClick);
+      trendingHeader.removeEventListener('click', handleClickAtTrendingHeader);
       trendingHeader.textContent = 'Трендовые Gif';
     }
   }
@@ -359,13 +359,14 @@ function insertImages(cols, img) {
 
     searchResultHeader.style.display = 'block';
     searchResultHeader.textContent = 'Результаты по запросу: ' + requestString;
-    moveToSearchResults();
+    jumpToSearchResults();
     searchField.value = '';
   }
 
-  function moveToSearchResults() {
-    searchResultHeaderTop = searchResultHeader.getBoundingClientRect().top;
-    window.scrollBy(0, searchResultHeaderTop);
+  function jumpToSearchResults() {
+    let trendingSlider = document.querySelector('.trending__slider');
+    trendingSliderBottom = trendingSlider.getBoundingClientRect().bottom;
+    window.scrollBy(0, trendingSliderBottom);
   }
 
   function showMoreGifs(event) {
