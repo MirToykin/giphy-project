@@ -278,12 +278,7 @@ function insertImages(cols, img) {
       searchResultHeader = document.querySelector('.search-results__header'),
       serchResultsContainer = document.querySelector('.search-results__container'),
       showMoreBtn = document.querySelector('.search-results__show-more'),
-      searchResultCols = document.querySelectorAll('.search-results__col'),
-      searchResultCol1 = document.querySelector('.search-results__col--1'),
-      searchResultCol2 = document.querySelector('.search-results__col--2'),
-      searchResultCol3 = document.querySelector('.search-results__col--3'),
-      searchResultCol4 = document.querySelector('.search-results__col--4'),
-      searchResultCol5 = document.querySelector('.search-results__col--5');
+      searchResultCols = document.querySelectorAll('.search-results__col');
 
   let currentColSearch = 0;
 
@@ -300,11 +295,6 @@ function insertImages(cols, img) {
 
     queryString = `&q=${requestString}`;
     requestGifs(queryString, '', event.target);
-
-    if(document.documentElement.clientWidth <= 767) {
-      // serchResultsContainer.scrollIntoView(true);
-      
-    }
 
   }
 
@@ -369,7 +359,13 @@ function insertImages(cols, img) {
 
     searchResultHeader.style.display = 'block';
     searchResultHeader.textContent = 'Результаты по запросу: ' + requestString;
+    moveToSearchResults();
     searchField.value = '';
+  }
+
+  function moveToSearchResults() {
+    searchResultHeaderTop = searchResultHeader.getBoundingClientRect().top;
+    window.scrollBy(0, searchResultHeaderTop);
   }
 
   function showMoreGifs(event) {
