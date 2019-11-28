@@ -223,7 +223,7 @@ function setBlockHeight(cols, gifMarginBottom) {
 
       if (getComputedStyle(trendingCols[2]).display == 'none') { // ширина экрана <= 480px
         for (let i = 0; i < trends.length; i++) {
-          trendItemMarginBottom = trendSlidesContainer.offsetWidth * 0.005;
+          trendItemMarginBottom = trendSlidesContainer.offsetWidth * 0.01;
           trends[i].style.marginBottom = trendItemMarginBottom  + 'px';
         }
       } else {
@@ -388,30 +388,30 @@ function setBlockHeight(cols, gifMarginBottom) {
 
   function setSearchResultsItemMarginBottom() {
 
-    let searchResultsItems = document.querySelectorAll('.search-results__item'),
-        widthOfCol = serchResultsContainer.offsetWidth * 0.192; // 19.2% ширина колонки
+    // let searchResultsItems = document.querySelectorAll('.search-results__item'),
+    //     widthOfCol = serchResultsContainer.offsetWidth * 0.192; // 19.2% ширина колонки
 
-    if (searchResultsItems.length != 0) {
+    // if (searchResultsItems.length != 0) {
 
-      if (serchResultsContainer.offsetWidth < 1000) {
-        let mb = (serchResultsContainer.offsetWidth - widthOfCol * 5)/4 + 'px'; // 5 - кол-во колонок, 4 - кол-во промежутков между колонками.
+    //   if (serchResultsContainer.offsetWidth < 1000) {
+    //     let mb = (serchResultsContainer.offsetWidth - widthOfCol * 5)/4 + 'px'; // 5 - кол-во колонок, 4 - кол-во промежутков между колонками.
 
-        for (let i = 0; i < searchResultsItems.length; i++) {
-          searchResultsItems[i].style.marginBottom = mb;
-        }      
-      } else {
+    //     for (let i = 0; i < searchResultsItems.length; i++) {
+    //       searchResultsItems[i].style.marginBottom = mb;
+    //     }      
+    //   } else {
 
-        if (getComputedStyle(searchResultsItems[0]).marginBottom != '0.625em') {
+    //     if (getComputedStyle(searchResultsItems[0]).marginBottom != '0.625em') {
 
-          for (let i = 0; i < searchResultsItems.length; i++) {
-            searchResultsItems[i].style.marginBottom = '0.625em';
-          }
+    //       for (let i = 0; i < searchResultsItems.length; i++) {
+    //         searchResultsItems[i].style.marginBottom = '0.625em';
+    //       }
 
-        }
+    //     }
 
-      }
+    //   }
 
-    }
+    // }
 
   }
 

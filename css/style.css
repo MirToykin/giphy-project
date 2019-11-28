@@ -235,7 +235,7 @@ main {
   justify-content: space-between;
 }
 .search-results__col {
-  width: 19.5%; /*192/1000*/
+  width: 19.5%;
   font-size: 0;
 }
 .search-results__item {
@@ -411,7 +411,7 @@ main {
     width: 100%;
     height: 50%
   }
-  .trending__col {
+  .trending__col, .search-results__col {
     width: 49.5%; 
   }
   .trending__col--3 {
@@ -422,9 +422,6 @@ main {
   }
   .search-results__col--3 {
     display: none;
-  }
-  .search-results__col {
-    width: 49%; 
   }
   .search-results__show-more {
     display: none;
