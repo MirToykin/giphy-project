@@ -20,6 +20,24 @@ function insertImages(cols, img) {
     index--;
   }
 }
+
+function setBlockHeight(cols, gifMarginBottom) {
+  let blockHeight = 0;
+
+  for (let i = 0; i < cols.length; i++) {
+    if (getComputedStyle(cols[i]).display != 'none') {
+      let gifsHeightSum = 0;
+      let widthOfCol = cols[i].offsetWidth;
+      for (let j = 0; j < cols[i].children.length; j++) {
+        gifsHeightSum += widthOfCol / cols[i].children[j].getAttribute('data-coef');
+        if (j != cols[i].children.length - 1) gifsHeightSum += gifMarginBottom;
+      }
+      if (gifsHeightSum > blockHeight) blockHeight = gifsHeightSum;
+    }
+  }
+  
+  return blockHeight;
+}
 // ___________________________Карусель с трендовыми gif__________________________
 (() => {
   let trendLength = 20;
@@ -227,22 +245,10 @@ function insertImages(cols, img) {
       }
 
       function handleClickAtTrendingHeader() {
-        let heightForTrendSlidesContainer = 0;
-        
+
         if (getComputedStyle(trendSlidesContainer).height == '0px') {
 
-          for (let i = 0; i < trendingCols.length; i++) {
-            if (getComputedStyle(trendingCols[i]).display != 'none') {
-              let gifsHeightSum = 0;
-              let widthOfCol = trendingCols[i].offsetWidth;
-              for (let j = 0; j < trendingCols[i].children.length; j++) {
-                gifsHeightSum += widthOfCol / trendingCols[i].children[j].getAttribute('data-coef');
-                if (j != trendingCols[i].children.length - 1) gifsHeightSum += trendItemMarginBottom;
-              }
-              if (gifsHeightSum > heightForTrendSlidesContainer) heightForTrendSlidesContainer = gifsHeightSum;
-            }
-          }
-          trendSlidesContainer.style.height = heightForTrendSlidesContainer + 'px';
+          trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
           trendingHeader.textContent = 'Скрыть трендовые Gif';
         } else {
           trendSlidesContainer.style.height = '0px';
@@ -271,6 +277,7 @@ function insertImages(cols, img) {
 
   let queryString;
   let requestString;
+  let coef;
 
   let searchGiphyAPI = `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&limit=${searchLimit}`;
 
@@ -279,8 +286,6 @@ function insertImages(cols, img) {
       serchResultsContainer = document.querySelector('.search-results__container'),
       showMoreBtn = document.querySelector('.search-results__show-more'),
       searchResultCols = document.querySelectorAll('.search-results__col');
-
-  let currentColSearch = 0;
 
   function showSearchResults(event) {
     event.preventDefault();
@@ -325,11 +330,15 @@ function insertImages(cols, img) {
         img.className = 'search-results__item';
         img.setAttribute('data-title', json.data[i].title);
         img.setAttribute('data-id', json.data[i].id);
+        coef = json.data[i].images.original.width/json.data[i].images.original.height;
+        img.setAttribute('data-coef', coef);
 
         currentCol = getColIndex(searchResultCols);
         insertImages(searchResultCols, img);
 
       }
+      
+      serchResultsContainer.style.height = setBlockHeight(searchResultCols, 0) + 'px';
 
       if (target == searchForm) {
         showSerchResultsContainerElements(true);
