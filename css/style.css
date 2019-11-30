@@ -245,6 +245,7 @@ main {
   color: #fff;
   padding: 0.3125em;
   cursor: pointer;
+  font-family: 'Calibri', sans-serif;
 }
 
 /*---------------увеличение картинки при клике---------------*/
@@ -331,12 +332,12 @@ main {
     margin-bottom: 0;
   }
   .trending__header {
-    text-align: center;
     cursor: pointer;
     margin-bottom: 0.3333em;;
   }
   .trending__header, .search-results__header {
     font-size: 1.5em;
+    text-align: center;
   }
   .trending__slider {
     padding-bottom: 0.49995em;
@@ -378,6 +379,10 @@ main {
   }
   .search-results__show-more {
     margin-top: 0.49995em;
+    width: 100%;
+    font-size: 1.5em;
+    line-height: 1em;
+    padding: 0.25em;
   }
 }
 
@@ -426,15 +431,5 @@ main {
   }
   .search-results__col--3 {
     display: none;
-  }
-  .search-results__show-more {
-    display: none;
-    background: #555;
-    border: none;
-    color: #fff;
-    width: 100%;
-    font-size: 1em;
-    padding: 0.3125em;
-    cursor: pointer;
   }
 }
