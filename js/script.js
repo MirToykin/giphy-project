@@ -412,7 +412,7 @@ function setBlockHeight(cols, gifMarginBottom) {
         //пространства между колонками к общей ширине контейнера их содержащего
         break;
       case 4: 
-        mb = serchResultsContainer.offsetWidth  * 0.01333;
+        mb = serchResultsContainer.offsetWidth  * 0.006666;
         break;
       case 3:
         mb = serchResultsContainer.offsetWidth  * 0.005;
