@@ -342,7 +342,7 @@ main {
     font-size: 0;
   }
   .trending__col, .search-results__col {
-    width: 32.5%; 
+    width: 33%; 
   }
   .trending__slide {
     width: 100%;
@@ -406,6 +406,8 @@ main {
   }
   .topWindow .search__form {
     display: block;
+    border-right: none;
+    border-left: none;
   }
   .topWindow .search__query-field, .topWindow .search__button {
     width: 100%;

@@ -228,7 +228,7 @@ function setBlockHeight(cols, gifMarginBottom) {
         }
       } else {
         for (let i = 0; i < trends.length; i++) {
-          trendItemMarginBottom = (trendSlidesContainer.offsetWidth * 0.025)/2;
+          trendItemMarginBottom = trendSlidesContainer.offsetWidth * 0.005;
           trends[i].style.marginBottom = trendItemMarginBottom  + 'px';
         }
       }
@@ -285,7 +285,14 @@ function setBlockHeight(cols, gifMarginBottom) {
       searchResultHeader = document.querySelector('.search-results__header'),
       serchResultsContainer = document.querySelector('.search-results__container'),
       showMoreBtn = document.querySelector('.search-results__show-more'),
-      searchResultCols = document.querySelectorAll('.search-results__col');
+      searchResultCols,
+      searchResultsItemMarginBottom;
+
+  function getSearchResultCols() {
+    searchResultCols = document.querySelectorAll('.search-results__col');
+  }
+
+  getSearchResultCols();
 
   function showSearchResults(event) {
     event.preventDefault();
@@ -337,8 +344,8 @@ function setBlockHeight(cols, gifMarginBottom) {
         insertImages(searchResultCols, img);
 
       }
-      
-      serchResultsContainer.style.height = setBlockHeight(searchResultCols, 0) + 'px';
+      setSearchResultsItemMarginBottom();
+      serchResultsContainer.style.height = setBlockHeight(searchResultCols, searchResultsItemMarginBottom) + 'px';
 
       if (target == searchForm) {
         showSerchResultsContainerElements(true);
@@ -375,7 +382,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   function jumpToSearchResults() {
     let trendingSlider = document.querySelector('.trending__slider');
     trendingSliderBottom = trendingSlider.getBoundingClientRect().bottom;
-    window.scrollBy(0, trendingSliderBottom);
+    window.scrollBy(0, trendingSliderBottom - parseFloat(getComputedStyle(document.querySelector('.search')).height));
   }
 
   function showMoreGifs(event) {
@@ -387,36 +394,44 @@ function setBlockHeight(cols, gifMarginBottom) {
   }
 
   function setSearchResultsItemMarginBottom() {
+    let searchResultsItems = document.querySelectorAll('.search-results__item');
 
-    // let searchResultsItems = document.querySelectorAll('.search-results__item'),
-    //     widthOfCol = serchResultsContainer.offsetWidth * 0.192; // 19.2% ширина колонки
+    if (searchResultsItems.length == 0) return;
 
-    // if (searchResultsItems.length != 0) {
+    let mb;
+    let numOfCols = 0;
+    for (let i = 0; i < searchResultCols.length; i++) {
+      if (getComputedStyle(searchResultCols[i]).display != 'none') {
+        numOfCols++;
+      }
+    }
 
-    //   if (serchResultsContainer.offsetWidth < 1000) {
-    //     let mb = (serchResultsContainer.offsetWidth - widthOfCol * 5)/4 + 'px'; // 5 - кол-во колонок, 4 - кол-во промежутков между колонками.
+    switch(numOfCols) {
+      case 5:
+        mb = serchResultsContainer.offsetWidth  * 0.00625;// 0.00625 = (offsetWidth - 19.5% * 5)/4 - отношение ширины 
+        //пространства между колонками к общей ширине контейнера их содержащего
+        break;
+      case 4: 
+        mb = serchResultsContainer.offsetWidth  * 0.01333;
+        break;
+      case 3:
+        mb = serchResultsContainer.offsetWidth  * 0.005;
+        break;
+      case 2:
+        mb = serchResultsContainer.offsetWidth  * 0.01;
+    }
 
-    //     for (let i = 0; i < searchResultsItems.length; i++) {
-    //       searchResultsItems[i].style.marginBottom = mb;
-    //     }      
-    //   } else {
-
-    //     if (getComputedStyle(searchResultsItems[0]).marginBottom != '0.625em') {
-
-    //       for (let i = 0; i < searchResultsItems.length; i++) {
-    //         searchResultsItems[i].style.marginBottom = '0.625em';
-    //       }
-
-    //     }
-
-    //   }
-
-    // }
+    searchResultsItemMarginBottom = mb;
+    for (let i = 0; i < searchResultsItems.length; i++) {
+      searchResultsItems[i].style.marginBottom = mb + 'px';
+    }
 
   }
 
   searchForm.addEventListener('submit', showSearchResults);
   showMoreBtn.addEventListener('click', showMoreGifs);
+  window.addEventListener('resize', setSearchResultsItemMarginBottom);
+  window.addEventListener('resize', getSearchResultCols);
   window.addEventListener('resize', setSearchResultsItemMarginBottom);
 })();
 
