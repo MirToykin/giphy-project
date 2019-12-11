@@ -304,9 +304,9 @@ function setBlockHeight(cols, gifMarginBottom) {
     }
 
     requestString = searchField.value;
-
     queryString = `&q=${requestString}`;
     requestGifs(queryString, '', event.target);
+    serchResultsContainer.style.borderBottom = '1px solid #fff';
 
   }
 

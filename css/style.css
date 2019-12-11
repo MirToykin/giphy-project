@@ -51,26 +51,29 @@ input {
   border-radius: 0px;
 }
 body {
-  background: #555;
+  background: #333;
+}
+button, 
+button:active, 
+button:focus {
+    outline: none;
 }
 .wrapper {
   width: 95%;
   max-width: 1040px;
   margin: 100px auto;
-  background: #bbb;
 }
 .trending__header, .search-results__header {
-  font-family: 'Calibri', sans-serif;
-  font-size: 2em;
-  background: #555;
-  color: #fff;
-  margin-bottom: 0.5em;
-  padding: 0.25em;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #aaa;
+  padding-left: 6px; /*сделан жесткий размер, чтобы выровнять текст с тектом на лого*/ 
+  margin-bottom: 0.4em;
 }
 /*---------------header---------------*/
 .header {
-  padding: 4em 1.3333em 1.3333em 1.3333em;
-  height: 8.45833em;
+  height: 3.125em;
+  margin-bottom: 2em;
 }
 .header-wrap {
   display: flex;
@@ -89,8 +92,8 @@ body {
 }
 /*---------------форма поиска---------------*/
 .search {
-  width: 76.92307%;
   height: 100%;
+  width: 100%;
 }
 .search__form {
   font-size: 0;
@@ -109,7 +112,8 @@ body {
 .search__button {
   width: 13.0339%;
   border: none;
-  background: #555;
+  font-family: 'Arial', sans-serif;
+  background: #aaa;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
@@ -130,9 +134,6 @@ body {
   display: flex;
   justify-content: flex-end;
 }
-.topWindow .search__form {
-  border: 2px solid #fff;
-}
 .topWindow .search__button {
   width: 9.997%; /*для того, чтобы не менялась ширина при прилипании формы к верху страницы*/
 }
@@ -140,13 +141,9 @@ body {
   width: 90.003%;
 }
 
-/*---------------main---------------*/
-main {
-  padding: 0 1.25em;
-}
 /*---------------trending---------------*/
 .trending {
-  margin-bottom: 3.125em;
+  margin-bottom: 0.4em;
 }
 .trending__slider-window {
   overflow: hidden;
@@ -191,12 +188,12 @@ main {
 }
 .trending__btn--forward {
   right: 0;
-  background: linear-gradient(to left, #bbb 0%, transparent 100%);
+  background: linear-gradient(to left, #555 0%, transparent 100%);
 /*   opacity: 1; */
 }
 .trending__btn--back {
   left: 0;
-  background: linear-gradient(to right, #bbb 0%, transparent 100%);
+  background: linear-gradient(to right, #555 0%, transparent 100%);
   display: none;
   opacity: 0;
 }
@@ -222,10 +219,14 @@ main {
 }
 
 /*---------------результаты поиска---------------*/
-
+.search-results {
+  position: relative;
+}
 .search-results__container {
+  box-sizing: content-box;
   display: flex;
   justify-content: space-between;
+  padding-bottom: 10px;
 }
 .search-results__col {
   width: 19.5%;
@@ -239,12 +240,15 @@ main {
 }
 .search-results__show-more {
   display: none;
-  background: #555;
   border: none;
   color: #fff;
-  padding: 0.3125em;
   cursor: pointer;
-  font-family: 'Calibri', sans-serif;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  position: absolute;
+  bottom: -30px;
+  height: 30px;
+  background: transparent;
 }
 
 /*---------------увеличение картинки при клике---------------*/
@@ -316,9 +320,12 @@ main {
     padding: 0;
   }
   .header {
-    padding: 1.3333em 0 1em 0;
+    padding-top: 1.3333em;
     height: 5.45833em;
     margin-bottom: 0;
+  }
+  .header__logo-link {
+    background-position: center;
   }
   .topWindow {
     top: 0;
@@ -332,10 +339,8 @@ main {
   }
   .trending__header {
     cursor: pointer;
-    margin-bottom: 0.3333em;;
   }
   .trending__header, .search-results__header {
-    font-size: 1.5em;
     text-align: center;
   }
   .trending__slider {
@@ -364,9 +369,6 @@ main {
     height: auto;
     margin: 0;
   }
-  .search-results__header {
-    margin-bottom: 0.3333em;
-  }
   .search-results__col--5, .search-results__col--4 {
     display: none;
   }
@@ -377,30 +379,32 @@ main {
     width: 15.331%;
   }
   .search-results__show-more {
-    margin-top: 0.49995em;
     width: 100%;
-    font-size: 1.5em;
-    line-height: 1em;
     padding: 0.25em;
+    position: static;
+    height: 3em;
+    line-height: 3em;
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    height: 12.4298em;
+    height: 9em;
+    margin-bottom: 0.4em;
+    box-sizing: content-box;
   }
   .header-wrap {
     display: block;
   }
   .header__logo-link {
     width: 100%;
-    height: 40%;
+    height: 35%;
     background: url(../img/logo1.png) no-repeat;
     background-size: contain;
   }
   .search {
     width: 100%;
-    height: 60%;
+    height: 65%;
   }
   .search__form {
     display: block;
@@ -419,6 +423,13 @@ main {
     width: 100%;
     height: 50%
   }
+  .search__query-field {
+    background: #aaa;
+    color: #fff;
+  }
+  .search__button {
+    background: #555;
+  }
   .trending__col, .search-results__col {
     width: 49.5%; 
   }
@@ -427,6 +438,10 @@ main {
   }
   .trending__btn {
     display: none;
+  }
+  .trending__header, .search-results__header {
+    height: 2em;
+    line-height: 2em;
   }
   .search-results__col--3 {
     display: none;
