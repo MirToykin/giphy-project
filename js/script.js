@@ -481,7 +481,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   let fullScreenImgWrap = document.querySelector('.full-screen__img-wrap');
   let fullScreenCloseBtn = document.querySelector('.full-screen__close-btn');
   let fullScreenTitle = document.querySelector('.full-screen__title');
-  let fullScreenTitleHeight = parseInt(getComputedStyle(fullScreenTitle).height);
+  // let fullScreenTitleHeight = parseInt(getComputedStyle(fullScreenTitle).height);
   let fullScreenPopup = document.querySelector('.full-screen__popup');
   let fullScreenImg;
 
@@ -501,16 +501,35 @@ function setBlockHeight(cols, gifMarginBottom) {
         fullScreenImg = document.createElement('img')
         fullScreenImg.src = json.data.images.original.url;
         fullScreenImg.className = 'full-screen__img';
-        fullScreenTitle.textContent = event.target.getAttribute('data-title') == '' ? 'БЕЗ НАЗВАНИЯ' : event.target.getAttribute('data-title').toUpperCase();
+        fullScreenTitle.textContent = event.target.getAttribute('data-title') === '' ? 'БЕЗ НАЗВАНИЯ' : event.target.getAttribute('data-title').toUpperCase();
 
         let coef = fullScreenImgWidth / fullScreenImgHeight;
+        let screenWidth = document.documentElement.clientWidth;
+        let screenHeight = document.documentElement.clientHeight;
 
-        fullScreenImg.height = fullScreenImgHeight > 400 ? 400 : fullScreenImgHeight;
-        fullScreenImg.width = fullScreenImg.height * coef; 
+        if (screenWidth < 768) {
 
+          if (screenWidth <= screenHeight) {
+            fullScreenImg.width = fullScreenImgWidth > screenWidth * 0.9 ? screenWidth * 0.9 : fullScreenImgWidth;
+            fullScreenImg.height = fullScreenImg.width / coef;
+          } else {
+            fullScreenImg.height = fullScreenImgHeight > screenHeight * 0.9 ? screenHeight * 0.9 : fullScreenImgHeight
+            fullScreenImg.width = fullScreenImg.height * coef;
+          }
+
+          fullScreenCloseBtn.textContent = 'Закрыть';
+
+        } else {
+
+          fullScreenImg.height = fullScreenImgHeight > 400 ? 400 : fullScreenImgHeight;
+          fullScreenImg.width = fullScreenImg.height * coef; 
+          fullScreenCloseBtn.textContent = 'x';
+
+        }
+
+        
         fullScreenPopup.style.height = fullScreenImg.height + 50 + 'px';
         fullScreenPopup.style.width = fullScreenImg.width + 'px';
-
         fullScreenImgWrap.append(fullScreenImg);
         document.body.style.overflow = 'hidden';
 

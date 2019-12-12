@@ -275,8 +275,6 @@ button:focus {
   border: 1px solid #fff;
   padding: 0.625em;
   box-sizing: content-box;
-  /* transition: height 0.7s; */
-  /* overflow: hidden; */
 }
 .full-screen__title {
   color: #fff;
@@ -298,7 +296,6 @@ button:focus {
   top: -1.5625em;
   right: -1.5625em;
   cursor: pointer;
-  /* z-index: 1000; */
 }
 
 
@@ -398,12 +395,19 @@ button:focus {
     height: 3em;
     line-height: 3em;
   }
+  .full-screen__close-btn {
+    width: auto;
+    font-weight: lighter;
+    top: 100%;
+    right: 0;
+    left: 0;
+    margin: auto;
+  }
 }
 
 @media (max-width: 480px) {
   .header {
     height: 9em;
-    /* margin-bottom: 0.4em; */
   }
   .header__logo-link {
     height: 35%;
@@ -444,10 +448,6 @@ button:focus {
   .trending__btn {
     display: none;
   }
-  /* .trending__header, .search-results__header {
-    height: 2em;
-    line-height: 2em;
-  } */
   .search-results__col--3 {
     display: none;
   }
