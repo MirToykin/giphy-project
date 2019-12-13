@@ -481,7 +481,6 @@ function setBlockHeight(cols, gifMarginBottom) {
   let fullScreenImgWrap = document.querySelector('.full-screen__img-wrap');
   let fullScreenCloseBtn = document.querySelector('.full-screen__close-btn');
   let fullScreenTitle = document.querySelector('.full-screen__title');
-  // let fullScreenTitleHeight = parseInt(getComputedStyle(fullScreenTitle).height);
   let fullScreenPopup = document.querySelector('.full-screen__popup');
   let fullScreenImg;
 
@@ -517,13 +516,10 @@ function setBlockHeight(cols, gifMarginBottom) {
             fullScreenImg.width = fullScreenImg.height * coef;
           }
 
-          fullScreenCloseBtn.textContent = 'Закрыть';
-
         } else {
 
           fullScreenImg.height = fullScreenImgHeight > 400 ? 400 : fullScreenImgHeight;
           fullScreenImg.width = fullScreenImg.height * coef; 
-          fullScreenCloseBtn.textContent = 'x';
 
         }
 
