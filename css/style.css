@@ -395,10 +395,6 @@ button:focus {
     height: 3em;
     line-height: 3em;
   }
-  /* .full-screen__close-btn {
-    top: 1.5625em;
-    right: 1.5625em;
-  } */
 }
 
 @media (max-width: 480px) {

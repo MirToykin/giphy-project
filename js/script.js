@@ -1,7 +1,7 @@
 let apiKey = 'xttvZ1Z1SnbXsD7xJB7kWsX7oTqeqZWY';
 
-let currentCol,
-    index; // введен для корректного заполнения колонок в блоке трендов и результатах поиска
+let currentCol;
+
 let searchForm = document.querySelector('.search__form');
 
 //___________________________Вспомогательные функции____________________________
@@ -13,12 +13,9 @@ function getColIndex(cols) {
 }
         
 function insertImages(cols, img) {
-  
   if (getComputedStyle(cols[currentCol]).display != 'none') {
     cols[currentCol].append(img);
-  } else {
-    index--;
-  }
+  } 
 }
 
 function setBlockHeight(cols, gifMarginBottom) {
@@ -38,6 +35,17 @@ function setBlockHeight(cols, gifMarginBottom) {
   
   return blockHeight;
 }
+
+// function getVisibleColsNum(cols) {
+//   let colsNum = 0;
+
+//   for (let i = 0; i < cols.length; i++) {
+//     if (getComputedStyle(cols[i]).display == 'block') colsNum++;
+//   }
+
+//   return colsNum;
+// }
+
 // ___________________________Карусель с трендовыми gif__________________________
 (() => {
   let trendLength = 20;
@@ -64,6 +72,7 @@ function setBlockHeight(cols, gifMarginBottom) {
 
   let trendIndex = 0;
   let trendingCols = document.querySelectorAll('.trending__col');
+  // let numOfTrendingCols;
   let trendItemMarginBottom;
   let coef;
 
@@ -75,7 +84,7 @@ function setBlockHeight(cols, gifMarginBottom) {
     fetch(trendGiphyAPI)
     .then(response => response.json())
     .then(json => {
-      for (index = 0; index < trendLength; index++) {
+      for (let index = 0; index < trendLength; index++) {
 
         let img = document.createElement('img');
         img.src = json.data[index].images.fixed_height.url;
@@ -262,11 +271,50 @@ function setBlockHeight(cols, gifMarginBottom) {
       trendingHeader.textContent = 'Трендовые Gif';
     }
   }
+  // numOfTrendingCols = getVisibleColsNum(trendingCols);
+
+  function resizeReplaceTrends() {
+    if (document.documentElement.clientWidth > 767) return;
+
+    let imgsForReplace;
+
+    if (getComputedStyle(trendingCols[2]).display == 'none' && trendingCols[2].hasChildNodes()) { // кол-во столбцов уменьшилось
+      imgsForReplace = trendingCols[2].children;
+      
+      for (let i = 0; i < imgsForReplace.length; i++) {
+        currentCol = getColIndex(trendingCols);
+        insertImages(trendingCols, imgsForReplace[i]);
+        trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+      }
+    } else if (getComputedStyle(trendingCols[2]).display == 'block' && !trendingCols[2].hasChildNodes()) { //кол-во столбцов увеличилось
+      let numOfImgsForReplace = Math.floor(trendLength / 3); // 3 - кол-во столбцов после увеличения
+
+      if (numOfImgsForReplace % 2 == 0) {
+        let col_0LastIndex = trendingCols[0].children.length - 1;
+        let col_0NewLastIndex = trendingCols[0].children.length - 1 - numOfImgsForReplace / 2;
+        for (let i = col_0LastIndex; i >  col_0NewLastIndex; i--) {
+          trendingCols[2].append(trendingCols[0].children[i]);
+        }
+
+        let col_1LastIndex = trendingCols[1].children.length - 1;
+        let col_1NewLastIndex = trendingCols[1].children.length - 1 - numOfImgsForReplace / 2;
+        for (let i = col_1LastIndex; i >  col_1NewLastIndex; i--) {
+          trendingCols[2].append(trendingCols[1].children[i]);
+        }
+
+        trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+      }
+    }
+  }
   
   setTrendingHeader();
   getTrendingGifs();
   window.addEventListener('resize', setTrendingMobileMarginBottom);
+  window.addEventListener('resize', () => {
+    trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+  });
   window.addEventListener('resize', setTrendingHeader);
+  window.addEventListener('resize', resizeReplaceTrends);
 
 })();
 
@@ -286,6 +334,7 @@ function setBlockHeight(cols, gifMarginBottom) {
       serchResultsContainer = document.querySelector('.search-results__container'),
       showMoreBtn = document.querySelector('.search-results__show-more'),
       searchResultCols,
+      // numOfSearchResultCols,
       searchResultsItemMarginBottom;
 
   function getSearchResultCols() {
@@ -427,6 +476,8 @@ function setBlockHeight(cols, gifMarginBottom) {
     }
 
   }
+  
+  // numOfSearchResultCols = getVisibleColsNum(searchResultCols);
 
   searchForm.addEventListener('submit', showSearchResults);
   showMoreBtn.addEventListener('click', showMoreGifs);
@@ -548,3 +599,4 @@ function setBlockHeight(cols, gifMarginBottom) {
 
   main.addEventListener('click', enlargeImage);
 })();
+
