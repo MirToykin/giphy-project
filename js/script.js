@@ -52,6 +52,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   let trendGiphyAPI = `https://api.giphy.com/v1/gifs/trending?api_key=${apiKey}&limit=${trendLength}`;
 
   let trendSlidesContainer = document.querySelector('.trending__slides');
+  let trendSlidesContainerHeight;
   let forwardBtn = document.querySelector('.trending__btn--forward'),
       backBtn = document.querySelector('.trending__btn--back');
   let trendingHeader = document.querySelector('.trending__header');
@@ -241,7 +242,6 @@ function setBlockHeight(cols, gifMarginBottom) {
           trends[i].style.marginBottom = trendItemMarginBottom  + 'px';
         }
       }
-
     }
   }
   
@@ -257,7 +257,8 @@ function setBlockHeight(cols, gifMarginBottom) {
 
         if (getComputedStyle(trendSlidesContainer).height == '0px') {
 
-          trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+          trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+          trendSlidesContainer.style.height = trendSlidesContainerHeight;
           trendingHeader.textContent = 'Скрыть трендовые Gif';
         } else {
           trendSlidesContainer.style.height = '0px';
@@ -279,18 +280,26 @@ function setBlockHeight(cols, gifMarginBottom) {
 
     if (getComputedStyle(trendingCols[2]).display == 'none' && trendingCols[2].hasChildNodes()) { // кол-во столбцов уменьшилось
       let interval = setInterval(() => {
-        if (!trendingCols[2].hasChildNodes()) clearInterval(interval);
+        if (!trendingCols[2].hasChildNodes()) {
+          clearInterval(interval);
+          return;
+        }
 
         let imgsForReplace = trendingCols[2].children;
     
         for (let i = 0; i < imgsForReplace.length; i++) {
+
           currentCol = getColIndex(trendingCols);
           insertImages(trendingCols, imgsForReplace[i]);
-          trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+          trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+
+          if (getComputedStyle(trendSlidesContainer).height != '0px') {
+            trendSlidesContainer.style.height = trendSlidesContainerHeight;
+          }
+
         }
       }, 1)
-      
-      
+
     } else if (getComputedStyle(trendingCols[2]).display == 'block' && !trendingCols[2].hasChildNodes()) { //кол-во столбцов увеличилось
       let numOfImgsToReplace = Math.floor(trendLength / 3); // 3 - кол-во столбцов после увеличения
 
@@ -325,7 +334,11 @@ function setBlockHeight(cols, gifMarginBottom) {
           trendingCols[2].append(trendingCols[1].children[i]);
         }
 
-        trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+        trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+          
+        if (getComputedStyle(trendSlidesContainer).height != '0px') {
+          trendSlidesContainer.style.height = trendSlidesContainerHeight;
+        }
       }, 1)
     }
   }
@@ -334,7 +347,11 @@ function setBlockHeight(cols, gifMarginBottom) {
   getTrendingGifs();
   window.addEventListener('resize', setTrendingMobileMarginBottom);
   window.addEventListener('resize', () => {
-    trendSlidesContainer.style.height = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+    trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+
+    if (getComputedStyle(trendSlidesContainer).height != '0px') {
+      trendSlidesContainer.style.height = trendSlidesContainerHeight;
+    }
   });
   window.addEventListener('resize', setTrendingHeader);
   window.addEventListener('resize', resizeReplaceTrends);
