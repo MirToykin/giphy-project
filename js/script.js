@@ -36,16 +36,6 @@ function setBlockHeight(cols, gifMarginBottom) {
   return blockHeight;
 }
 
-// function getVisibleColsNum(cols) {
-//   let colsNum = 0;
-
-//   for (let i = 0; i < cols.length; i++) {
-//     if (getComputedStyle(cols[i]).display == 'block') colsNum++;
-//   }
-
-//   return colsNum;
-// }
-
 // ___________________________Карусель с трендовыми gif__________________________
 (() => {
   let trendLength = 20;
@@ -73,7 +63,6 @@ function setBlockHeight(cols, gifMarginBottom) {
 
   let trendIndex = 0;
   let trendingCols = document.querySelectorAll('.trending__col');
-  // let numOfTrendingCols;
   let trendItemMarginBottom;
   let coef;
 
@@ -272,11 +261,23 @@ function setBlockHeight(cols, gifMarginBottom) {
       trendingHeader.textContent = 'Трендовые Gif';
     }
   }
-  // numOfTrendingCols = getVisibleColsNum(trendingCols);
 
   function resizeReplaceTrends() {
 
-    if (document.documentElement.clientWidth > 767) return;
+    if (document.documentElement.clientWidth > 767) {
+
+      let interval = setInterval(() => {
+        for (let i = 0; i < trendingCols.length; i++) {
+          for (let j = 0; j < trendingCols[i].children.length; j++) {
+            trendSlidesContainer.append(trendingCols[i].children[j]);
+            trendSlidesContainer.style.height = 'auto';
+          }
+        }
+
+        if (trendSlidesContainer.children.length == trendLength + 3) clearInterval(interval); // + 3 т.к. детьми 
+        // данного элемента помимо трендовых гиф являются еще 3 колонки, используемые в моб. версии
+      }, 1)
+    };
 
     if (getComputedStyle(trendingCols[2]).display == 'none' && trendingCols[2].hasChildNodes()) { // кол-во столбцов уменьшилось
       let interval = setInterval(() => {
