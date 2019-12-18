@@ -148,7 +148,7 @@ button:focus {
 .trending__slider-window {
   overflow: hidden;
   margin: 0 auto;
-  height: 9.375em;
+  height: 150px; /*число должно быть одинаковыь с переменной slideHeight в скрипте*/
   position: relative;
 }
 .trending__slides {

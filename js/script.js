@@ -47,7 +47,7 @@ function setBlockHeight(cols, gifMarginBottom) {
       backBtn = document.querySelector('.trending__btn--back');
   let trendingHeader = document.querySelector('.trending__header');
 
-  let trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;;
+  let trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
   let visibleSliderWidth = trendSliderWidth;
 
   let trendSlidesWidths = [];  // в каждом элементе массива 
@@ -89,14 +89,12 @@ function setBlockHeight(cols, gifMarginBottom) {
           insertImages(trendingCols, img);
         } else {
           trendSlidesContainer.append(img);
-          trendSlidesWidths.push(coef);
         }
 
+        trendSlidesWidths.push(coef * slideHeight + slideMarginRight);
       }
 
       setTrendingMobileMarginBottom();
-
-      trendSlidesWidths = trendSlidesWidths.map((item => item * slideHeight + slideMarginRight));
 
       allSlidesWidth = trendSlidesWidths.reduce((sum, current) => sum + current, 0);
 
@@ -267,16 +265,24 @@ function setBlockHeight(cols, gifMarginBottom) {
     if (document.documentElement.clientWidth > 767) {
 
       let interval = setInterval(() => {
+        trendSlidesContainer.style.height = 'auto';
+        trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
+        visibleSliderWidth = trendSliderWidth;
+        trendSlidesWidths = [];
+
         for (let i = 0; i < trendingCols.length; i++) {
-          for (let j = 0; j < trendingCols[i].children.length; j++) {
-            trendSlidesContainer.append(trendingCols[i].children[j]);
-            trendSlidesContainer.style.height = 'auto';
+          for (let j = 0; j < trendingCols[i].children.length; ) { // j не наращивается, т.к. длина коллекции постоянно убывает
+            let trendImg = trendingCols[i].children[j];
+            trendSlidesContainer.append(trendImg);
+            trendSlidesWidths.push(trendImg.getAttribute('data-coef') * slideHeight + slideMarginRight);
           }
         }
 
         if (trendSlidesContainer.children.length == trendLength + 3) clearInterval(interval); // + 3 т.к. детьми 
         // данного элемента помимо трендовых гиф являются еще 3 колонки, используемые в моб. версии
-      }, 1)
+      }, 1);
+
+      return;
     };
 
     if (getComputedStyle(trendingCols[2]).display == 'none' && trendingCols[2].hasChildNodes()) { // кол-во столбцов уменьшилось
@@ -310,7 +316,7 @@ function setBlockHeight(cols, gifMarginBottom) {
           return;
         }
 
-        let col_0LastIndex = trendingCols[0].children.length - 1;;
+        let col_0LastIndex = trendingCols[0].children.length - 1;
         let col_0NewLastIndex;
         let col_1LastIndex = trendingCols[1].children.length - 1;
         let col_1NewLastIndex;
