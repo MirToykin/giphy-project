@@ -263,26 +263,33 @@ function setBlockHeight(cols, gifMarginBottom) {
   function resizeReplaceTrends() {
 
     if (document.documentElement.clientWidth > 767) {
+      if (trendingCols[0].hasChildNodes() || trendingCols[1].hasChildNodes() || trendingCols[2].hasChildNodes()) {
+        let interval = setInterval(() => {
+          trendSlidesContainer.style.height = 'auto';
+          trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
+          visibleSliderWidth = trendSliderWidth;
+          trendSlidesWidths = [];
 
-      let interval = setInterval(() => {
-        trendSlidesContainer.style.height = 'auto';
-        trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
-        visibleSliderWidth = trendSliderWidth;
-        trendSlidesWidths = [];
-
-        for (let i = 0; i < trendingCols.length; i++) {
-          for (let j = 0; j < trendingCols[i].children.length; ) { // j не наращивается, т.к. длина коллекции постоянно убывает
-            let trendImg = trendingCols[i].children[j];
-            trendSlidesContainer.append(trendImg);
-            trendSlidesWidths.push(trendImg.getAttribute('data-coef') * slideHeight + slideMarginRight);
+          for (let i = 0; i < trendingCols.length; i++) {
+            for (let j = 0; j < trendingCols[i].children.length; ) { // j не наращивается, т.к. длина коллекции постоянно убывает
+              let trendImg = trendingCols[i].children[j];
+              trendSlidesContainer.append(trendImg);
+              trendSlidesWidths.push(trendImg.getAttribute('data-coef') * slideHeight + slideMarginRight);
+            }
           }
-        }
 
-        if (trendSlidesContainer.children.length == trendLength + 3) clearInterval(interval); // + 3 т.к. детьми 
-        // данного элемента помимо трендовых гиф являются еще 3 колонки, используемые в моб. версии
-      }, 1);
+          if (trendSlidesContainer.children.length == trendLength + 3) {
+            clearInterval(interval); // + 3 т.к. детьми 
+            // данного элемента помимо трендовых гиф являются еще 3 колонки, используемые в моб. версии
+            return;
+          } 
+        }, 0);
+      } else {
+        // alert('test');
+        return;
+      }
+      
 
-      return;
     };
 
     if (getComputedStyle(trendingCols[2]).display == 'none' && trendingCols[2].hasChildNodes()) { // кол-во столбцов уменьшилось
@@ -305,7 +312,7 @@ function setBlockHeight(cols, gifMarginBottom) {
           }
 
         }
-      }, 1)
+      }, 0)
 
     } else if (getComputedStyle(trendingCols[2]).display == 'block' && !trendingCols[2].hasChildNodes()) { //кол-во столбцов увеличилось
       let numOfImgsToReplace = Math.floor(trendLength / 3); // 3 - кол-во столбцов после увеличения
@@ -346,7 +353,7 @@ function setBlockHeight(cols, gifMarginBottom) {
         if (getComputedStyle(trendSlidesContainer).height != '0px') {
           trendSlidesContainer.style.height = trendSlidesContainerHeight;
         }
-      }, 1)
+      }, 0)
     }
   }
   
@@ -530,7 +537,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   showMoreBtn.addEventListener('click', showMoreGifs);
   window.addEventListener('resize', setSearchResultsItemMarginBottom);
   window.addEventListener('resize', getSearchResultCols);
-  window.addEventListener('resize', setSearchResultsItemMarginBottom);
+  // window.addEventListener('resize', setSearchResultsItemMarginBottom);
 })();
 
 // ___________________________Прикрепление формы поиска к верху окна__________________________
