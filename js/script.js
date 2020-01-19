@@ -266,7 +266,7 @@ function setBlockHeight(cols, gifMarginBottom) {
       trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
       visibleSliderWidth = trendSliderWidth;
 
-      if (trendingCols[0].hasChildNodes() || trendingCols[1].hasChildNodes() || trendingCols[2].hasChildNodes()) { // переход с моб. версии
+      if (trendingCols[0].hasChildNodes() || trendingCols[1].hasChildNodes() || trendingCols[2].hasChildNodes()) { // переход с моб. версии на полноэкр.
         trendSlidesContainer.style.height = 'auto';
 
         let interval = setInterval(() => {
@@ -287,76 +287,84 @@ function setBlockHeight(cols, gifMarginBottom) {
           } 
         }, 0);
       } else {
-        // alert('test');
         return;
       }
-      
-
-    };
-
-    if (getComputedStyle(trendingCols[2]).display == 'none' && trendingCols[2].hasChildNodes()) { // кол-во столбцов уменьшилось
-      let interval = setInterval(() => {
-        if (!trendingCols[2].hasChildNodes()) {
-          clearInterval(interval);
-          return;
-        }
-
-        let imgsForReplace = trendingCols[2].children;
+    } else {
+      if (trendSlidesContainer.children.length == 3) { // ресайз в пределах моб. версии
+        if (getComputedStyle(trendingCols[2]).display == 'none' && trendingCols[2].hasChildNodes()) { // кол-во столбцов уменьшилось
+          let interval = setInterval(() => {
+            if (!trendingCols[2].hasChildNodes()) {
+              clearInterval(interval);
+              return;
+            }
     
-        for (let i = 0; i < imgsForReplace.length; i++) {
+            let imgsForReplace = trendingCols[2].children;
+        
+            for (let i = 0; i < imgsForReplace.length; i++) {
+    
+              currentCol = getColIndex(trendingCols);
+              insertImages(trendingCols, imgsForReplace[i]);
+              trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+    
+              if (getComputedStyle(trendSlidesContainer).height != '0px') {
+                trendSlidesContainer.style.height = trendSlidesContainerHeight;
+              }
+    
+            }
+          }, 0)
+    
+        } else if (getComputedStyle(trendingCols[2]).display == 'block' && !trendingCols[2].hasChildNodes()) { //кол-во столбцов увеличилось
+          let numOfImgsToReplace = Math.floor(trendLength / 3); // 3 - кол-во столбцов после увеличения
+    
+          let interval = setInterval(() => {
+            if (trendingCols[2].children.length == numOfImgsToReplace) {
+              clearInterval(interval);
+              return;
+            }
+    
+            let col_0LastIndex = trendingCols[0].children.length - 1;
+            let col_0NewLastIndex;
+            let col_1LastIndex = trendingCols[1].children.length - 1;
+            let col_1NewLastIndex;
+    
+            if (numOfImgsToReplace % 2 == 0) {
+    
+              col_0NewLastIndex = trendingCols[0].children.length - 1 - numOfImgsToReplace / 2;
+              col_1NewLastIndex = trendingCols[1].children.length - 1 - numOfImgsToReplace / 2;
+    
+            } else {
+    
+              col_0NewLastIndex = trendingCols[0].children.length - 1 - Math.ceil(numOfImgsToReplace / 2);
+              col_1NewLastIndex = trendingCols[1].children.length - 1 - Math.floor(numOfImgsToReplace / 2);
+    
+            }
+    
+            for (let i = col_0LastIndex; i >  col_0NewLastIndex; i--) {
+              trendingCols[2].append(trendingCols[0].children[i]);
+            }
+    
+            for (let i = col_1LastIndex; i >  col_1NewLastIndex; i--) {
+              trendingCols[2].append(trendingCols[1].children[i]);
+            }
+    
+            trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
+              
+            if (getComputedStyle(trendSlidesContainer).height != '0px') {
+              trendSlidesContainer.style.height = trendSlidesContainerHeight;
+            }
+          }, 0)
+        }
+      } else {
+        let trendGifs = document.querySelectorAll('.trending__slide');
 
+        for (let i = 0; i < trendGifs.length; i++) {
           currentCol = getColIndex(trendingCols);
-          insertImages(trendingCols, imgsForReplace[i]);
-          trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
-
-          if (getComputedStyle(trendSlidesContainer).height != '0px') {
-            trendSlidesContainer.style.height = trendSlidesContainerHeight;
-          }
-
+          insertImages(trendingCols, trendGifs[i]);
         }
-      }, 0)
-
-    } else if (getComputedStyle(trendingCols[2]).display == 'block' && !trendingCols[2].hasChildNodes()) { //кол-во столбцов увеличилось
-      let numOfImgsToReplace = Math.floor(trendLength / 3); // 3 - кол-во столбцов после увеличения
-
-      let interval = setInterval(() => {
-        if (trendingCols[2].children.length == numOfImgsToReplace) {
-          clearInterval(interval);
-          return;
-        }
-
-        let col_0LastIndex = trendingCols[0].children.length - 1;
-        let col_0NewLastIndex;
-        let col_1LastIndex = trendingCols[1].children.length - 1;
-        let col_1NewLastIndex;
-
-        if (numOfImgsToReplace % 2 == 0) {
-
-          col_0NewLastIndex = trendingCols[0].children.length - 1 - numOfImgsToReplace / 2;
-          col_1NewLastIndex = trendingCols[1].children.length - 1 - numOfImgsToReplace / 2;
-
-        } else {
-
-          col_0NewLastIndex = trendingCols[0].children.length - 1 - Math.ceil(numOfImgsToReplace / 2);
-          col_1NewLastIndex = trendingCols[1].children.length - 1 - Math.floor(numOfImgsToReplace / 2);
-
-        }
-
-        for (let i = col_0LastIndex; i >  col_0NewLastIndex; i--) {
-          trendingCols[2].append(trendingCols[0].children[i]);
-        }
-
-        for (let i = col_1LastIndex; i >  col_1NewLastIndex; i--) {
-          trendingCols[2].append(trendingCols[1].children[i]);
-        }
-
-        trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
-          
-        if (getComputedStyle(trendSlidesContainer).height != '0px') {
-          trendSlidesContainer.style.height = trendSlidesContainerHeight;
-        }
-      }, 0)
+      }
     }
+
+    
   }
   
   setTrendingHeader();
@@ -365,7 +373,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   window.addEventListener('resize', () => {
     trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
 
-    if (getComputedStyle(trendSlidesContainer).height != '0px' && trendSlidesContainer.children.length !== trendLength + 3) { // 23 только не в моб. версиях
+    if (getComputedStyle(trendSlidesContainer).height != '0px' && trendSlidesContainer.children.length == 3) { // 3 - кол-во столбцов в моб. версии
       trendSlidesContainer.style.height = trendSlidesContainerHeight;
     }
   });
