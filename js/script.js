@@ -263,12 +263,14 @@ function setBlockHeight(cols, gifMarginBottom) {
   function resizeReplaceTrends() {
 
     if (document.documentElement.clientWidth > 767) {
-      if (trendingCols[0].hasChildNodes() || trendingCols[1].hasChildNodes() || trendingCols[2].hasChildNodes()) {
+      trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
+      visibleSliderWidth = trendSliderWidth;
+
+      if (trendingCols[0].hasChildNodes() || trendingCols[1].hasChildNodes() || trendingCols[2].hasChildNodes()) { // переход с моб. версии
+        trendSlidesContainer.style.height = 'auto';
+
         let interval = setInterval(() => {
-          trendSlidesContainer.style.height = 'auto';
-          trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
-          visibleSliderWidth = trendSliderWidth;
-          trendSlidesWidths = [];
+          trendSlidesWidths = []; // нужно заново заполнять массив ширин, т.к. после моб. вер. меняется порядок трендовых гиф.
 
           for (let i = 0; i < trendingCols.length; i++) {
             for (let j = 0; j < trendingCols[i].children.length; ) { // j не наращивается, т.к. длина коллекции постоянно убывает
@@ -363,7 +365,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   window.addEventListener('resize', () => {
     trendSlidesContainerHeight = setBlockHeight(trendingCols, trendItemMarginBottom) + 'px';
 
-    if (getComputedStyle(trendSlidesContainer).height != '0px') {
+    if (getComputedStyle(trendSlidesContainer).height != '0px' && trendSlidesContainer.children.length !== trendLength + 3) { // 23 только не в моб. версиях
       trendSlidesContainer.style.height = trendSlidesContainerHeight;
     }
   });
