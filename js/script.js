@@ -395,15 +395,9 @@ function setBlockHeight(cols, gifMarginBottom) {
       searchResultHeader = document.querySelector('.search-results__header'),
       serchResultsContainer = document.querySelector('.search-results__container'),
       showMoreBtn = document.querySelector('.search-results__show-more'),
-      searchResultCols,
-      // numOfSearchResultCols,
+      searchResultCols = document.querySelectorAll('.search-results__col'),
+      numOfVisibleCols = getNumOfVisibleCols(),
       searchResultsItemMarginBottom;
-
-  function getSearchResultCols() {
-    searchResultCols = document.querySelectorAll('.search-results__col');
-  }
-
-  getSearchResultCols();
 
   function showSearchResults(event) {
     event.preventDefault();
@@ -421,6 +415,14 @@ function setBlockHeight(cols, gifMarginBottom) {
 
   }
 
+  function clearCols(cols) {
+    for (let j = 0; j < cols.length; j++) {
+      while (cols[j].firstChild) {
+        cols[j].removeChild(cols[j].firstChild);
+      }
+    }
+  }
+
   function requestGifs(queryString, stringOffset, target) {
     let i = 0;
 
@@ -434,11 +436,12 @@ function setBlockHeight(cols, gifMarginBottom) {
 
         if (i == 0 && stringOffset == '') {
 
-          for (let j = 0; j < searchResultCols.length; j++) {
-            while (searchResultCols[j].firstChild) {
-              searchResultCols[j].removeChild(searchResultCols[j].firstChild);
-            }
-          }
+          // for (let j = 0; j < searchResultCols.length; j++) {
+          //   while (searchResultCols[j].firstChild) {
+          //     searchResultCols[j].removeChild(searchResultCols[j].firstChild);
+          //   }
+          // }
+          clearCols(searchResultCols);
 
           searchResultHeader.style.display = 'none';
           showMoreBtn.style.display = 'none';
@@ -456,7 +459,8 @@ function setBlockHeight(cols, gifMarginBottom) {
 
       }
       setSearchResultsItemMarginBottom();
-      serchResultsContainer.style.height = setBlockHeight(searchResultCols, searchResultsItemMarginBottom) + 'px';
+      // serchResultsContainer.style.height = setBlockHeight(searchResultCols, searchResultsItemMarginBottom) + 'px';
+      // не помню для чего нужно, не удалять пока наверняка не буду уверен, что это не нужно
 
       if (target == searchForm) {
         showSerchResultsContainerElements(true);
@@ -504,18 +508,25 @@ function setBlockHeight(cols, gifMarginBottom) {
     requestGifs(`&q=${searchResultHeader.textContent.slice(23)}`, stringOffset, event.target) // 'Результаты по запросу: ' - 23 символа (крайний индекс 22), с 23 идет текст запроса
   }
 
+  function getNumOfVisibleCols() {
+    let numOfCols = 0;
+
+    for (let i = 0; i < searchResultCols.length; i++) {
+      if (getComputedStyle(searchResultCols[i]).display != 'none') {
+        numOfCols++;
+      }
+    }
+
+    return numOfCols;
+  }
+
   function setSearchResultsItemMarginBottom() {
     let searchResultsItems = document.querySelectorAll('.search-results__item');
 
     if (searchResultsItems.length == 0) return;
 
     let mb;
-    let numOfCols = 0;
-    for (let i = 0; i < searchResultCols.length; i++) {
-      if (getComputedStyle(searchResultCols[i]).display != 'none') {
-        numOfCols++;
-      }
-    }
+    let numOfCols = getNumOfVisibleCols();
 
     switch(numOfCols) {
       case 5:
@@ -536,16 +547,32 @@ function setBlockHeight(cols, gifMarginBottom) {
     for (let i = 0; i < searchResultsItems.length; i++) {
       searchResultsItems[i].style.marginBottom = mb + 'px';
     }
-
   }
-  
-  // numOfSearchResultCols = getVisibleColsNum(searchResultCols);
+
+  function resizeReplaceSearchResults() {
+    let numOfCols = getNumOfVisibleCols();
+
+    if (numOfCols == numOfVisibleCols) {
+      return;
+    } else {
+      numOfVisibleCols = numOfCols;
+
+      let searchResults = document.querySelectorAll('.search-results__item');
+
+      clearCols(searchResultCols);
+
+      for (let i = 0; i < searchResults.length; i++) {
+        currentCol = getColIndex(searchResultCols);
+        insertImages(searchResultCols, searchResults[i]);
+      }
+    }
+  }
 
   searchForm.addEventListener('submit', showSearchResults);
   showMoreBtn.addEventListener('click', showMoreGifs);
   window.addEventListener('resize', setSearchResultsItemMarginBottom);
-  window.addEventListener('resize', getSearchResultCols);
-  // window.addEventListener('resize', setSearchResultsItemMarginBottom);
+  window.addEventListener('resize', resizeReplaceSearchResults)
+
 })();
 
 // ___________________________Прикрепление формы поиска к верху окна__________________________
