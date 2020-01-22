@@ -369,7 +369,7 @@ button:focus {
     font-size: 0;
   }
   .trending__btn {
-    display: none;
+    display: none !important;
   }
   .trending__col, .search-results__col {
     width: 33%; 

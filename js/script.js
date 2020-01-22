@@ -363,8 +363,28 @@ function setBlockHeight(cols, gifMarginBottom) {
         }
       }
     }
+  }
 
-    
+  function setSliderButtonsVisibility() {
+    if (document.documentElement.clientWidth > 767) {
+      // forwardOffset = 0;
+      // backOffset = 0;
+      // trendIndex = 0;
+      // trendSlidesContainer.style.left = '0px';
+      
+      // if (getComputedStyle(trendSlidesContainer).left != (-(allSlidesWidth - visibleSliderWidth)).toFixed(2) + 'px') {
+        forwardBtn.style.display = '';
+        backBtn.style.display = ''
+      // }
+
+      // if (getComputedStyle(trendSlidesContainer).left != '0px') {
+      //   backBtn.style.display = 'block';
+      // }
+      
+    } else {
+      forwardBtn.style.display = 'none';
+      backBtn.style.display = 'none';
+    }
   }
   
   setTrendingHeader();
@@ -379,6 +399,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   });
   window.addEventListener('resize', setTrendingHeader);
   window.addEventListener('resize', resizeReplaceTrends);
+  // window.addEventListener('resize', setSliderButtonsVisibility);
 
 })();
 
