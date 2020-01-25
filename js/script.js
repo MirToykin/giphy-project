@@ -69,7 +69,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   let btnTransitionTime = parseFloat(getComputedStyle(document.querySelector('.trending__btn')).transitionDuration) * 1000;
 
   function getTrendingGifs() {
-    let screenWidth = document.documentElement.clientWidth;
+    let screenWidth = window.innerWidth;
 
     fetch(trendGiphyAPI)
     .then(response => response.json())
@@ -215,7 +215,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   }
   
   function setTrendingMobileMarginBottom() {
-    if (document.documentElement.clientWidth <= 767) {
+    if (window.innerWidth <= 767) {
       let trends = document.querySelectorAll('.trending__slide');
 
       if (getComputedStyle(trendingCols[2]).display == 'none') { // ширина экрана <= 480px
@@ -233,7 +233,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   }
   
   function setTrendingHeader() {
-    if (document.documentElement.clientWidth <= 767) {
+    if (window.innerWidth <= 767) {
       if (getComputedStyle(trendSlidesContainer).height == '0px') {
         trendingHeader.textContent = 'Показать трендовые Gif';
       } else {
@@ -262,7 +262,7 @@ function setBlockHeight(cols, gifMarginBottom) {
 
   function resizeReplaceTrends() {
 
-    if (document.documentElement.clientWidth > 767) {
+    if (window.innerWidth > 767) {
       trendSliderWidth = document.querySelector('.trending__slider-window').offsetWidth;
       visibleSliderWidth = trendSliderWidth;
 
@@ -353,6 +353,8 @@ function setBlockHeight(cols, gifMarginBottom) {
               trendSlidesContainer.style.height = trendSlidesContainerHeight;
             }
           }, 0)
+        } else {
+          return;
         }
       } else {
         let trendGifs = document.querySelectorAll('.trending__slide');
@@ -588,7 +590,7 @@ function setBlockHeight(cols, gifMarginBottom) {
   }
 
   function setSearchDivWidth() {
-    let documentWidth = document.documentElement.clientWidth;
+    let documentWidth = window.innerWidth;
 
     if (documentWidth <= 480) {
       searchDiv.style.width = '100%';
@@ -643,7 +645,7 @@ function setBlockHeight(cols, gifMarginBottom) {
         fullScreenTitle.textContent = event.target.getAttribute('data-title') === '' ? 'БЕЗ НАЗВАНИЯ' : event.target.getAttribute('data-title').toUpperCase();
 
         let coef = fullScreenImgWidth / fullScreenImgHeight;
-        let screenWidth = document.documentElement.clientWidth;
+        let screenWidth = window.innerWidth;
         let screenHeight = document.documentElement.clientHeight;
 
         if (screenWidth < 768) {
