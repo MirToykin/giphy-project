@@ -4,7 +4,7 @@ let currentCol;
 
 let searchForm = document.querySelector('.search__form');
 
-//___________________________Вспомогательные функции___________________________
+//___________________________Вспомогательные функции____________________________
 function getColIndex(cols) {
   for (let j = 0; j < cols.length - 1; j++) {
     if (cols[j].children.length > cols[j + 1].children.length && getComputedStyle(cols[j + 1]).display != 'none') return j + 1;
