@@ -1,7 +1,5 @@
 let apiKey = 'xttvZ1Z1SnbXsD7xJB7kWsX7oTqeqZWY';
-
 let currentCol;
-
 let searchForm = document.querySelector('.search__form');
 
 //___________________________Вспомогательные функции___________________________
@@ -437,17 +435,9 @@ function setBlockHeight(cols, gifMarginBottom) {
         img.src = json.data[i].images.fixed_height.url;
 
         if (i == 0 && stringOffset == '') {
-
-          // for (let j = 0; j < searchResultCols.length; j++) {
-          //   while (searchResultCols[j].firstChild) {
-          //     searchResultCols[j].removeChild(searchResultCols[j].firstChild);
-          //   }
-          // }
           clearCols(searchResultCols);
-
           searchResultHeader.style.display = 'none';
           showMoreBtn.style.display = 'none';
-
         }
 
         img.className = 'search-results__item';
@@ -462,7 +452,7 @@ function setBlockHeight(cols, gifMarginBottom) {
       }
       setSearchResultsItemMarginBottom();
       // serchResultsContainer.style.height = setBlockHeight(searchResultCols, searchResultsItemMarginBottom) + 'px';
-      // не помню для чего нужно, не удалять пока наверняка не буду уверен, что это не нужно
+      // не удалять пока наверняка не буду уверен, что это не нужно
 
       if (target == searchForm) {
         showSerchResultsContainerElements(true);
